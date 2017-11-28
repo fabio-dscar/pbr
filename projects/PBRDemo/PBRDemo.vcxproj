@@ -69,7 +69,26 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -111,6 +130,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\Math\PBRMath.cpp" />
+    <ClCompile Include="..\..\src\Math\Bounds.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix3x3.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\src\Math\Quat.cpp" />
+    <ClCompile Include="..\..\src\Math\Ray.cpp" />
+    <ClCompile Include="..\..\src\Math\Transform.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector2.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector3.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\PBR.h" />
+    <ClInclude Include="..\..\src\Math\PBRMath.h" />
+    <ClInclude Include="..\..\src\Math\Bounds.h" />
+    <ClInclude Include="..\..\src\Math\Hash.hpp" />
+    <ClInclude Include="..\..\src\Math\Matrix2x2.h" />
+    <ClInclude Include="..\..\src\Math\Matrix3x3.h" />
+    <ClInclude Include="..\..\src\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\src\Math\Quat.h" />
+    <ClInclude Include="..\..\src\Math\Ray.h" />
+    <ClInclude Include="..\..\src\Math\Transform.h" />
+    <ClInclude Include="..\..\src\Math\Vector2.h" />
+    <ClInclude Include="..\..\src\Math\Vector3.h" />
+    <ClInclude Include="..\..\src\Math\Vector4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
