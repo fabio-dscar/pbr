@@ -72,22 +72,30 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
+    <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,6 +103,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>zlib.lib;glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -102,6 +118,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>zlib.lib;glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -114,7 +138,13 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>zlib.lib;glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -127,9 +157,16 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>zlib.lib;glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ext\lodepng\lodepng.cpp" />
     <ClCompile Include="..\..\src\Core\Geometry.cpp" />
     <ClCompile Include="..\..\src\Core\Resources.cpp" />
     <ClCompile Include="..\..\src\Core\SceneObject.cpp" />
@@ -151,6 +188,7 @@
     <ClCompile Include="..\..\src\Math\Vector2.cpp" />
     <ClCompile Include="..\..\src\Math\Vector3.cpp" />
     <ClCompile Include="..\..\src\Math\Vector4.cpp" />
+    <ClCompile Include="..\..\src\Utils\Image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Core\Geometry.h" />
@@ -177,6 +215,7 @@
     <ClInclude Include="..\..\src\Math\Vector2.h" />
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
+    <ClInclude Include="..\..\src\Utils\Image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

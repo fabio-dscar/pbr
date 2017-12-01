@@ -259,3 +259,35 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Add external libraries exceptions
+!ext/glew/lib
+!ext/glew/lib/*
+!ext/glew/lib/Release/x64
+!ext/glew/lib/Release/Win32
+
+!ext/glew/bin
+!ext/glew/bin/*
+!ext/glew/bin/Release/x64
+!ext/glew/bin/Release/Win32
+
+!ext/freeglut/bin
+!ext/freeglut/bin/*
+!ext/freeglut/bin/x64
+!ext/freeglut/bin/Win32
+
+!ext/freeglut/lib
+!ext/freeglut/lib/*
+!ext/freeglut/lib/x64
+!ext/freeglut/lib/Win32
+
+!ext/zlib/lib/*
+!ext/zlib/lib/Release/x64
+!ext/zlib/lib/Debug/x64
+
+!ext/zlib/bin
+!ext/zlib/bin/*
+!ext/zlib/bin/Debug/x64
+!ext/zlib/bin/Debug/Win32
+!ext/zlib/bin/Release/x64
+!ext/zlib/bin/Release/Win32

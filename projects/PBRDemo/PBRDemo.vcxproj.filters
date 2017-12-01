@@ -43,6 +43,12 @@
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{15fa78a2-40d7-4442-9186-b15c54ddee32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{0e580c9e-40b5-49c8-bad8-0d79fc18e62a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{8754af44-5de9-439b-90b3-dba8a01111bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Math\PBRMath.cpp">
@@ -107,6 +113,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Core\Geometry.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\Image.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\lodepng\lodepng.cpp">
+      <Filter>External</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Graphics\Shader.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\Image.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
