@@ -18,15 +18,16 @@ namespace pbr {
     };
 
     // Light data for shader blocks
+    // CARE: data is properly aligned, do not change
     struct LightData {
-        bool      state;
-        LightType type;
-        uint8     aux[2];
-        Vec3      position;
-        float     auxA;
-        Color     emission;
-        float     auxB;
-        Vec3      sideU;
+        bool      state;      // On/off flag
+        LightType type;       // Light type
+        uint8     aux[2];      
+        Vec3      position;   // Light position / direction for dir lights
+        float     auxA;        
+        Color     emission;   // Non normalized emission (already multiplied by intensity)
+        float     auxB;       
+        Vec3      sideU;      
         float     auxC;
         Vec3      sideV;
     }; // 64 Bytes

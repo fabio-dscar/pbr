@@ -72,22 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -130,7 +130,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Core\Geometry.cpp" />
+    <ClCompile Include="..\..\src\Core\Resources.cpp" />
     <ClCompile Include="..\..\src\Core\SceneObject.cpp" />
+    <ClCompile Include="..\..\src\Core\Shape.cpp" />
     <ClCompile Include="..\..\src\Core\Spectrum.cpp" />
     <ClCompile Include="..\..\src\Lights\DirectionalLight.cpp" />
     <ClCompile Include="..\..\src\Lights\Light.cpp" />
@@ -150,12 +153,17 @@
     <ClCompile Include="..\..\src\Math\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Core\Geometry.h" />
+    <ClInclude Include="..\..\src\Core\Resources.h" />
     <ClInclude Include="..\..\src\Core\SceneObject.h" />
+    <ClInclude Include="..\..\src\Core\Shape.h" />
     <ClInclude Include="..\..\src\Core\Spectrum.h" />
+    <ClInclude Include="..\..\src\Graphics\Shader.h" />
     <ClInclude Include="..\..\src\Lights\DirectionalLight.h" />
     <ClInclude Include="..\..\src\Lights\Light.h" />
     <ClInclude Include="..\..\src\Lights\PointLight.h" />
     <ClInclude Include="..\..\src\Lights\SpotLight.h" />
+    <ClInclude Include="..\..\src\Materials\Material.h" />
     <ClInclude Include="..\..\src\PBR.h" />
     <ClInclude Include="..\..\src\Math\PBRMath.h" />
     <ClInclude Include="..\..\src\Math\Bounds.h" />

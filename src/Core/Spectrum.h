@@ -11,10 +11,9 @@ namespace pbr {
     public:
         float r, g, b;
 
-        RGBSpectrum() : r(0), g(0), b(0) { }
-        explicit RGBSpectrum(float s) : r(s), g(s), b(s) { }
-        RGBSpectrum(float r, float g, float b)
-            : r(r), g(g), b(b) { }
+        RGBSpectrum();
+        RGBSpectrum(float r, float g, float b);
+        explicit RGBSpectrum(float s);
 
         RGBSpectrum  operator+ (const RGBSpectrum& rgb) const;
         RGBSpectrum& operator+=(const RGBSpectrum& rgb);
