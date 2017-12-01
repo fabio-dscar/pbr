@@ -3,7 +3,7 @@
 
 namespace pbr {
 
-    class Shader {
+    class PBR_SHARED Shader {
     public:
 
     private:
