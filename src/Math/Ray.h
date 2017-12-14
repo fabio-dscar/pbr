@@ -4,7 +4,17 @@
 #include <PBRMath.h>
 
 namespace pbr {
+    
+    class SceneObject;
+
 namespace math {
+
+    struct RayHitInfo {
+        SceneObject* obj;
+        Vec3  point;
+        Vec3  normal;
+        float dist;   
+    };
 
     class PBR_SHARED Ray {
     public:

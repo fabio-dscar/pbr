@@ -39,17 +39,19 @@ namespace pbr {
         Light(const Vec3& position, const Color& emission, float intensity);
         Light(const Mat4& lightToWorld, const Color& emission, float intensity);
 
-        bool  isOn()      const;
-        float intensity() const;
-        Color emission()  const;
+        bool  isOn()        const;
+        bool  castShadows() const;
+        float intensity()   const;
+        Color emission()    const;
 
         virtual void toData(LightData& data) const = 0;
         virtual sref<Shape> shape() const;
 
     protected:
         bool  _on;
+        bool  _shadows;
         float _intensity;
-        Color _emission; 
+        Color _emission;  // Normalized emission
     };
 
 }

@@ -26,7 +26,7 @@ namespace pbr {
         void setOrientation(const Quat& quat);
         void setObjToWorld(const Matrix4x4& mat);
 
-        void updateMatrix();
+        virtual void updateMatrix();
 
     protected:
         Quat _orientation;

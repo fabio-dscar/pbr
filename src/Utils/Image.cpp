@@ -8,7 +8,8 @@
 
 #include <zlib.h>
 
-/*#include <ImfRgba.h>
+/*
+#include <ImfRgba.h>
 #include <ImfRgbaFile.h>
 #include <hdrloader.h>
 
@@ -603,7 +604,7 @@ bool Image::toGrayscale() {
     return true;
 }
 
-bool Image::toneMap() {
+bool Image::toneMap(float exp) {
     uint32 nChan     = numChannels();
     uint32 bytesChan = formatToBytesPerChannel(_format);
 
@@ -632,13 +633,13 @@ bool Image::toneMap() {
 
         float* srcf = (float*)src;
         do {
-            float resR = srcf[0] / (srcf[0] + 1.0f);
+            float resR = exp * srcf[0] / (exp * srcf[0] + 1.0f);
             *dst++ = math::clamp<uint8>(uint8(255.0f * resR), 0u, 255u);
 
-            float resG = srcf[1] / (srcf[1] + 1.0f);
+            float resG = exp * srcf[1] / (exp * srcf[1] + 1.0f);
             *dst++ = math::clamp<uint8>(uint8(255.0f * resG), 0u, 255u);
 
-            float resB = srcf[2] / (srcf[2] + 1.0f);
+            float resB = exp * srcf[2] / (exp * srcf[2] + 1.0f);
             *dst++ = math::clamp<uint8>(uint8(255.0f * resB), 0u, 255u);
 
             srcf += nChan;

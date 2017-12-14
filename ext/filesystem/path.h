@@ -156,7 +156,7 @@ public:
     std::string filenameNoExt() const {
         std::string name = filename();
         std::string ext = extension();
-        if (is_file())
+        if (!ext.empty())
             return name.substr(0, name.size() - ext.size() - 1);
 
         return name;

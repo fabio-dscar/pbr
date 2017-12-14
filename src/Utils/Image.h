@@ -148,7 +148,7 @@ namespace pbr {
         bool flipX();
         bool flipY();
         bool toGrayscale();
-        bool toneMap();
+        bool toneMap(float exposure = 1.0f);
         
         uint32 size(uint32 lvl = 0) const;
         uint32 totalSize()   const;

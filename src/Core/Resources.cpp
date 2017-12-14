@@ -14,6 +14,10 @@ Resources& Resources::get() {
     return _inst;
 }
 
+void Resources::initialize() {
+
+}
+
 void Resources::addGeometry(const std::string& name, const sref<Geometry>& geometry) {
     _geometry[name] = geometry;
 }

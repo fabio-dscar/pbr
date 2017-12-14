@@ -17,6 +17,10 @@ bool Light::isOn() const {
     return _on;
 }
 
+bool Light::castShadows() const {
+    return _shadows;
+}
+
 float Light::intensity() const {
     return _intensity;
 }

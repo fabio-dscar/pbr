@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -72,28 +72,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
@@ -109,7 +109,8 @@
     <PostBuildEvent>
       <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
 COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
-COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\Shaders" /s /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +125,8 @@ COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "
     <PostBuildEvent>
       <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
 COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
-COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\Shaders" /s /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,7 +145,8 @@ COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "
     <PostBuildEvent>
       <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
 COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
-COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\Shaders" /s /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,16 +165,27 @@ COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "
     <PostBuildEvent>
       <Command>COPY /Y "$(SolutionDir)..\ext\glew\bin\Release\$(Platform)\glew32.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
 COPY /Y "$(SolutionDir)..\ext\freeglut\bin\$(Platform)\freeglut.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
-COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."</Command>
+COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\."
+XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(Platform)\Shaders" /s /e /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ext\lodepng\lodepng.cpp" />
+    <ClCompile Include="..\..\src\App\OpenGLApplication.cpp" />
+    <ClCompile Include="..\..\src\App\PBRApp.cpp" />
+    <ClCompile Include="..\..\src\Core\Camera.cpp" />
     <ClCompile Include="..\..\src\Core\Geometry.cpp" />
+    <ClCompile Include="..\..\src\Core\Mesh.cpp" />
+    <ClCompile Include="..\..\src\Core\Perspective.cpp" />
     <ClCompile Include="..\..\src\Core\Resources.cpp" />
+    <ClCompile Include="..\..\src\Core\Scene.cpp" />
     <ClCompile Include="..\..\src\Core\SceneObject.cpp" />
     <ClCompile Include="..\..\src\Core\Shape.cpp" />
     <ClCompile Include="..\..\src\Core\Spectrum.cpp" />
+    <ClCompile Include="..\..\src\Core\Sphere.cpp" />
+    <ClCompile Include="..\..\src\Graphics\Renderer.cpp" />
+    <ClCompile Include="..\..\src\Graphics\RenderInterface.cpp" />
+    <ClCompile Include="..\..\src\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\src\Lights\DirectionalLight.cpp" />
     <ClCompile Include="..\..\src\Lights\Light.cpp" />
     <ClCompile Include="..\..\src\Lights\PointLight.cpp" />
@@ -189,13 +203,23 @@ COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "
     <ClCompile Include="..\..\src\Math\Vector3.cpp" />
     <ClCompile Include="..\..\src\Math\Vector4.cpp" />
     <ClCompile Include="..\..\src\Utils\Image.cpp" />
+    <ClCompile Include="..\..\src\Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\App\OpenGLApplication.h" />
+    <ClInclude Include="..\..\src\App\PBRApp.h" />
+    <ClInclude Include="..\..\src\Core\Camera.h" />
     <ClInclude Include="..\..\src\Core\Geometry.h" />
+    <ClInclude Include="..\..\src\Core\Mesh.h" />
+    <ClInclude Include="..\..\src\Core\Perspective.h" />
     <ClInclude Include="..\..\src\Core\Resources.h" />
+    <ClInclude Include="..\..\src\Core\Scene.h" />
     <ClInclude Include="..\..\src\Core\SceneObject.h" />
     <ClInclude Include="..\..\src\Core\Shape.h" />
     <ClInclude Include="..\..\src\Core\Spectrum.h" />
+    <ClInclude Include="..\..\src\Core\Sphere.h" />
+    <ClInclude Include="..\..\src\Graphics\Renderer.h" />
+    <ClInclude Include="..\..\src\Graphics\RenderInterface.h" />
     <ClInclude Include="..\..\src\Graphics\Shader.h" />
     <ClInclude Include="..\..\src\Lights\DirectionalLight.h" />
     <ClInclude Include="..\..\src\Lights\Light.h" />
@@ -216,6 +240,11 @@ COPY /Y "$(SolutionDir)..\ext\zlib\bin\$(Configuration)\$(Platform)\zlib1.dll" "
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\Utils\Image.h" />
+    <ClInclude Include="..\..\src\Utils\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\Shaders\common.fs" />
+    <None Include="..\..\data\Shaders\lighting.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

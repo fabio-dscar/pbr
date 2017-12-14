@@ -25,6 +25,8 @@ namespace pbr {
 
         static Resources& get();
 
+        void initialize();
+
         void addGeometry(const std::string& name, const sref<Geometry>& geometry);
         void addShape   (const std::string& name, const sref<Shape>& shape);
         void addShader  (const std::string& name, const sref<Shader>& shader);

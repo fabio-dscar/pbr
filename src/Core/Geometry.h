@@ -48,8 +48,27 @@ namespace pbr {
     PBR_SHARED void genSphereGeometry(Geometry& geo, float radius, uint32 widthSegments, uint32 heightSegments);
     PBR_SHARED void genBoxGeometry(Geometry& geo, uint32 widthSegments, uint32 heightSegments, uint32 depthSegments);
 
-    // TODO: Barreto
-    //PBR_SHARED void fromObjFile(Geometry& geo, const ObjFile& objFile);
+    // Obj file
+    struct ObjVertex {
+        Vec3 pos;
+        Vec3 normal;
+        Vec2 texCoord;
+
+        bool operator==(const ObjVertex& v) const {
+            return pos == v.pos &&
+                   normal == v.normal &&
+                   texCoord == v.texCoord;
+        }
+    };
+
+    struct ObjFile {
+        std::string            objName;
+        std::vector<ObjVertex> vertices;
+        std::vector<uint32>    indices;
+    };
+
+    PBR_SHARED bool loadObj(const std::string& filePath, ObjFile& obj);
+    PBR_SHARED void fromObjFile(Geometry& geo, const ObjFile& objFile);
 }
 
 #endif
