@@ -1,4 +1,5 @@
 #include <Bounds.h>
+#include <Ray.h>
 
 using namespace pbr;
 using namespace pbr::math;
@@ -83,6 +84,37 @@ void BBox3::expand(const BBox3& box) {
 void BBox3::intersect(const BBox3& box) {
     _min = math::max(_min, box[0]);
     _max = math::min(_max, box[1]);
+}
+
+bool BBox3::intersectRay(const Ray& ray, float* t) const {
+	float tMin = ray.tMin();
+	float tMax = ray.tMax();
+
+	Vec3 dir = ray.direction();
+	Vec3 origin = ray.origin();
+
+	float invDir, tNear, tFar;
+
+	for (int axis = 0; axis < 3; axis++) {
+		invDir = 1.0 / dir[axis];
+
+		tNear = (_min[axis] - origin[axis]) * invDir;
+		tFar = (_max[axis] - origin[axis]) *invDir;
+
+		if (tNear > tFar)
+			std::swap(tNear, tFar);
+
+		if (tNear > tMin)
+			tMin = tNear;
+		if (tFar < tMax)
+			tMax = tFar;
+
+		if (tMin > tMax)
+			return false;
+	}
+
+	*t = tMin;
+	return true;
 }
 
 BBox3 math::expand(const BBox3& box, const Vec3& pt) {
