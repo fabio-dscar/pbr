@@ -30,7 +30,9 @@ void main(void) {
 	vec3 spec = vec3(0, 0, 0);
 	if (NdotL > 0) {
 		diff = texture(diffTex, vsIn.texCoords * 8).rgb * NdotL;
-		spec = vec3(0.6, 0.6, 0.6) * pow(NdotH, 50.0);
+
+		if (NdotH > 0)
+			spec = vec3(0.6, 0.6, 0.6) * pow(NdotH, 50.0);
 	}
 
 	outColor = vec4(diff + spec, 1.0);
