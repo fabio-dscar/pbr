@@ -99,5 +99,24 @@ void PBRApp::processMouseClick(int button, int state, int x, int y) {
     // Pixel (x, y)
     if (_mouseBtns[0]) {
         Vec2 pixel = Vec2(_clickX, _clickY);
+
+       	//Create ray from pixel;
+        Vec3 rayNDS = Vec3((2.0f * pixel.x) / _width - 1.0f,
+                            1.0f - (2.0f * pixel.y) / _height,
+                            1.0f);
+        
+        Vec4 rayClip = Vec4(rayNDS.x, rayNDS.y, -1.0, 1.0);
+        
+        Vec4 rayEye = inverse(_camera->projMatrix()) * rayClip;
+        rayEye = Vec4(rayEye.x, rayEye.y, -1.0, 0.0);
+        
+        Vec3 rayWorld = (inverse(_camera->viewMatrix()) * rayEye);
+        rayWorld = normalize(rayWorld);
+        
+        Ray ray = Ray(_camera->position(), rayWorld);
+        
+        _scene.intersect(ray);
+
+
     }
 }

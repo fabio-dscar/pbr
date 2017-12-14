@@ -25,3 +25,11 @@ Vec3 Ray::operator()(float t) const {
 void Ray::setMaxT(float tMax) {
     _tMax = tMax;
 }
+
+float Ray::tMin() const {
+    return _tMin;
+}
+
+float Ray::tMax() const {
+    return _tMax;
+}

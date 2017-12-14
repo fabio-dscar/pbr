@@ -6,6 +6,26 @@ using namespace pbr;
 
 Scene::Scene() : _bbox(Vec3(0)) { }
 
+bool Scene::intersect(const Ray& ray) {
+    RayHitInfo info;
+    float t;
+    info.dist = FLOAT_INFINITY;
+    info.obj  = nullptr;
+    
+    for (sref<Shape> shape : _shapes) {
+        if (shape->bbox().intersectRay(ray, &t)) {
+            if (t < info.dist) {
+                info.dist = t;
+                info.obj  = shape.get();
+            }
+        }
+    }
+
+    std::cout << info.obj << std::endl;
+
+    return info.obj != nullptr;
+}
+
 void Scene::addCamera(const sref<Camera>& camera) {
     _cameras.push_back(camera);
 }

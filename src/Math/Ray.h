@@ -28,6 +28,9 @@ namespace math {
 
         Vec3 operator()(float t) const;
 
+        float tMin() const;
+        float tMax() const;
+
     private:
         Vec3  _origin;
         Vec3  _dir;

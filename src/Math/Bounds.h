@@ -2,6 +2,7 @@
 #define __PBR_BOUNDS_H__
 
 #include <PBRMath.h>
+#include <Ray.h>
 
 namespace pbr {
     namespace math {
@@ -34,6 +35,8 @@ namespace pbr {
             void expand(const BBox3& box);
             void intersect(const BBox3& box);
             bool isBounded() const;
+
+            bool BBox3::intersectRay(const Ray& ray, float* t) const;
 
         private:
             Vec3 _min;
