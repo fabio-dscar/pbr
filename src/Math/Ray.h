@@ -23,8 +23,6 @@ namespace math {
 
         const Vec3& origin()    const;
         const Vec3& direction() const;
-		const float& tMin() const;
-		const float& tMax() const;
 
         void setMaxT(float tMax);
 

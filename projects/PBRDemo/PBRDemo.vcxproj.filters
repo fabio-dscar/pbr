@@ -162,6 +162,9 @@
     <ClCompile Include="..\..\src\Utils\Utils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Core\Texture.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\PBR.h">
@@ -269,9 +272,8 @@
     <ClInclude Include="..\..\src\Utils\Utils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\data\Shaders\common.fs" />
-    <None Include="..\..\data\Shaders\lighting.vs" />
+    <ClInclude Include="..\..\src\Core\Texture.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,14 +18,6 @@ const Vec3& Ray::direction() const {
     return _dir;
 }
 
-const float& Ray::tMin() const {
-	return _tMin;
-}
-
-const float& Ray::tMax() const {
-	return _tMax;
-}
-
 Vec3 Ray::operator()(float t) const {
     return _origin + t * _dir;
 }

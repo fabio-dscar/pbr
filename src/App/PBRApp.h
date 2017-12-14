@@ -24,6 +24,9 @@ namespace pbr {
         Renderer _renderer;
 
         sref<Camera> _camera;
+
+        float _rotAngleX;
+        float _rotAngleY;
     };
 
 }

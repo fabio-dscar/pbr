@@ -33,7 +33,6 @@ namespace pbr {
             void expand(const Vec3& pt);
             void expand(const BBox3& box);
             void intersect(const BBox3& box);
-			bool intersectRay(const Ray& ray, float* t) const;
             bool isBounded() const;
 
         private:

@@ -50,6 +50,9 @@ namespace pbr {
 
         float _far;
         float _near;
+
+        float _pitch;
+        float _yaw;
     };
 
 }

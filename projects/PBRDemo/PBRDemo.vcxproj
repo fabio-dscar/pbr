@@ -183,6 +183,7 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClCompile Include="..\..\src\Core\Shape.cpp" />
     <ClCompile Include="..\..\src\Core\Spectrum.cpp" />
     <ClCompile Include="..\..\src\Core\Sphere.cpp" />
+    <ClCompile Include="..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\src\Graphics\Renderer.cpp" />
     <ClCompile Include="..\..\src\Graphics\RenderInterface.cpp" />
     <ClCompile Include="..\..\src\Graphics\Shader.cpp" />
@@ -218,6 +219,7 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClInclude Include="..\..\src\Core\Shape.h" />
     <ClInclude Include="..\..\src\Core\Spectrum.h" />
     <ClInclude Include="..\..\src\Core\Sphere.h" />
+    <ClInclude Include="..\..\src\Core\Texture.h" />
     <ClInclude Include="..\..\src\Graphics\Renderer.h" />
     <ClInclude Include="..\..\src\Graphics\RenderInterface.h" />
     <ClInclude Include="..\..\src\Graphics\Shader.h" />
@@ -241,10 +243,6 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\Utils\Image.h" />
     <ClInclude Include="..\..\src\Utils\Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\data\Shaders\common.fs" />
-    <None Include="..\..\data\Shaders\lighting.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

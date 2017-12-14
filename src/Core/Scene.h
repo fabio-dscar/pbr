@@ -20,7 +20,8 @@ namespace pbr {
     public:
         Scene();
 
-        bool intersect(const Ray& ray);
+        // TODO
+        //bool intersect(const Ray& ray);
 
         void addCamera(const sref<Camera>& camera);
         void addShape (const sref<Shape>&  shape);      

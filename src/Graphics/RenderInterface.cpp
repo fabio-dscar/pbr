@@ -5,6 +5,9 @@
 #include <Geometry.h>
 #include <Utils.h>
 
+#include <Image.h>
+#include <Texture.h>
+
 using namespace pbr::math;
 
 const GLenum OGLShaderTypes[] = {
@@ -33,6 +36,220 @@ const GLenum OGLBufferUsage[] = {
     GL_DYNAMIC_DRAW
 };
 
+
+const GLenum OGLTexTargets[] = {
+    GL_TEXTURE_1D,
+    GL_TEXTURE_2D,
+    GL_TEXTURE_3D,
+    GL_TEXTURE_CUBE_MAP,
+    GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+    GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+    GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+};
+
+const GLenum OGLTexSizedFormats[] = {
+    0,
+
+    // Unsigned formats
+    GL_R8,
+    GL_RG8,
+    GL_RGB8,
+    GL_RGBA8,
+
+    GL_R16,
+    GL_RG16,
+    GL_RGB16,
+    GL_RGBA16,
+
+    // Signed IMGFMTs
+    GL_R8I,
+    GL_RG8I,
+    GL_RGB8I,
+    GL_RGBA8I,
+
+    GL_R16I,
+    GL_RG16I,
+    GL_RGB16I,
+    GL_RGBA16I,
+
+    // Float IMGFMTs
+    GL_R16F,
+    GL_RG16F,
+    GL_RGB16F,
+    GL_RGBA16F,
+
+    GL_R32F,
+    GL_RG32F,
+    GL_RGB32F,
+    GL_RGBA32F,
+
+    // Signed integer IMGFMTs
+    GL_R16I,
+    GL_RG16I,
+    GL_RGB16I,
+    GL_RGBA16I,
+
+    GL_R32I,
+    GL_RG32I,
+    GL_RGB32I,
+    GL_RGBA32I,
+
+    // Unsigned integer IMGFMTs
+    GL_R16UI,
+    GL_RG16UI,
+    GL_RGB16UI,
+    GL_RGBA16UI,
+
+    GL_R32UI,
+    GL_RG32UI,
+    GL_RGB32UI,
+    GL_RGBA32UI,
+
+    // Packed formats
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+
+    // Depth IMGFMTs
+    GL_DEPTH_COMPONENT16,
+    GL_DEPTH_COMPONENT24,
+    GL_DEPTH24_STENCIL8,
+    GL_DEPTH_COMPONENT32,
+
+    // Compressed IMGFMTs
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+};
+
+const GLenum OGLTexPixelFormats[] = {
+    0,
+
+    // Unsigned IMGFMTs
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    // Signed IMGFMTs
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    // Float IMGFMTs
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    // Signed integer IMGFMTs
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    // Unsigned integer IMGFMTs
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+
+    // Packed IMGFMTs
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+
+    // Depth IMGFMTs
+    GL_DEPTH_COMPONENT,
+    GL_DEPTH_COMPONENT,
+    GL_DEPTH_STENCIL,
+    GL_DEPTH_COMPONENT,
+
+    // Compressed IMGFMTs
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+};
+
+const GLenum OGLTexPixelTypes[] = {
+    GL_UNSIGNED_BYTE,
+    GL_BYTE,
+    GL_UNSIGNED_SHORT,
+    GL_SHORT,
+    GL_UNSIGNED_INT,
+    GL_INT,
+    GL_FLOAT,
+    GL_UNSIGNED_BYTE_3_3_2,
+    GL_UNSIGNED_BYTE_2_3_3_REV,
+    GL_UNSIGNED_SHORT_5_6_5,
+    GL_UNSIGNED_SHORT_5_6_5_REV,
+    GL_UNSIGNED_SHORT_4_4_4_4,
+    GL_UNSIGNED_SHORT_4_4_4_4_REV,
+    GL_UNSIGNED_SHORT_5_5_5_1,
+    GL_UNSIGNED_SHORT_1_5_5_5_REV,
+    GL_UNSIGNED_INT_8_8_8_8,
+    GL_UNSIGNED_INT_8_8_8_8_REV,
+    GL_UNSIGNED_INT_10_10_10_2,
+    GL_UNSIGNED_INT_2_10_10_10_REV
+};
+
+const GLenum OGLTexFilters[] = { 
+    GL_NEAREST,
+    GL_LINEAR,
+    GL_NEAREST_MIPMAP_NEAREST,
+    GL_LINEAR_MIPMAP_NEAREST,
+    GL_NEAREST_MIPMAP_LINEAR,
+    GL_LINEAR_MIPMAP_LINEAR 
+};
+
+const GLenum OGLTexWrapping[] = { 
+    GL_REPEAT,
+    GL_MIRRORED_REPEAT,
+    GL_CLAMP_TO_EDGE,
+    GL_CLAMP_TO_BORDER
+};
+
 using namespace pbr;
 
 RenderInterface::RenderInterface() {
@@ -48,14 +265,52 @@ RenderInterface& RenderInterface::get() {
     return _inst;
 }
 
+GLuint createTexture(const Image& img, const TexSampler& sampler) {
+    GLuint id = 0;
+    GLenum target = OGLTexTargets[img.type()];
+
+    glGenTextures(1, &id);
+    glBindTexture(target, id);
+
+    GLenum pType = OGLTexPixelTypes[img.compType()];
+    GLenum oglFmt = OGLTexPixelFormats[img.format()];
+
+    // Upload all levels
+    ImageType type = img.type();
+    for (uint32 lvl = 0; lvl < img.numLevels(); ++lvl) {
+        uint32 w = mipDimension(img.width(), lvl);
+        uint32 h = mipDimension(img.height(), lvl);
+        uint32 d = mipDimension(img.depth(), lvl);
+
+        if (type == IMGTYPE_2D)
+            glTexImage2D(target, lvl, oglFmt, w, h, 0, oglFmt, pType, img.data(lvl));
+        else if (type == IMGTYPE_1D)
+            glTexImage1D(target, lvl, oglFmt, w, 0, oglFmt, pType, img.data(lvl));
+        else if (type == IMGTYPE_3D)
+            glTexImage3D(target, lvl, oglFmt, w, h, d, 0, oglFmt, pType, img.data(lvl));
+    }
+
+    glTexParameteri(target, GL_TEXTURE_WRAP_S, OGLTexWrapping[sampler.sWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T, OGLTexWrapping[sampler.tWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R, OGLTexWrapping[sampler.rWrap()]);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, OGLTexFilters[sampler.minFilter()]);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, OGLTexFilters[sampler.magFilter()]);
+
+    // Unbind texture
+    glBindTexture(target, 0);
+
+    return id;
+}
+
 void RenderInterface::initialize() {
     _programs.push_back({ 0 });
     _currProgram = 0;
-
+    
     // Load standard engine shaders
     ShaderSource vsLighting(VERTEX_SHADER,   "lighting.vs");
     ShaderSource fsLighting(FRAGMENT_SHADER, "lighting.fs");
-
+    ShaderSource fsLightingTex(FRAGMENT_SHADER, "lightingTex.fs");
+    
     Shader prog("lighting");
     prog.addShader(vsLighting);
     prog.addShader(fsLighting);
@@ -68,6 +323,28 @@ void RenderInterface::initialize() {
 
     prog.registerUniform("ModelMatrix");
     prog.registerUniform("NormalMatrix");
+
+    Shader progTex("lightingTex");
+    progTex.addShader(vsLighting);
+    progTex.addShader(fsLightingTex);
+    progTex.link();
+
+    progTex.registerUniform("ModelMatrix");
+    progTex.registerUniform("NormalMatrix");
+
+    Image tex;
+    tex.loadImage("floor.png");
+    TexSampler sampler;
+    GLuint id = createTexture(tex, sampler);
+    RHI.useProgram(progTex.id());
+    progTex.registerUniformBlock("cameraBlock");
+    progTex.registerUniform("diffTex");
+    setSampler("diffTex", 1);
+    RHI.setBufferBlock("cameraBlock", 0);
+    RHI.useProgram(0);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, id);
 }
 
 RRID RenderInterface::uploadGeometry(const sref<Geometry>& geo) {
@@ -389,6 +666,12 @@ void RenderInterface::setMatrix4(const std::string& name, const Mat4& mat) {
     GLuint id = _programs[_currProgram].id;
     GLint loc = glGetUniformLocation(id, name.c_str());
     glUniformMatrix4fv(loc, 1, GL_FALSE, (const GLfloat*)&mat);
+}
+
+void RenderInterface::setSampler(const std::string& name, uint32 id) {
+    GLuint pid = _programs[_currProgram].id;
+    GLint loc  = glGetUniformLocation(pid, name.c_str());
+    glUniform1i(loc, id);
 }
 
 void RenderInterface::setFloat(int32 loc, float val) {

@@ -5,7 +5,7 @@
 
 using namespace pbr;
 
-const std::string SHADER_PATH = ".\\Shaders\\";
+const std::string SHADER_PATH = "Shaders/";
 
 ShaderSource::ShaderSource(ShaderType type, const std::string& filePath) {
     _id = 0;

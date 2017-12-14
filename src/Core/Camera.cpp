@@ -10,6 +10,10 @@ Camera::Camera(int32 width, int32 height, const Vec3& eye,
     : _width(width), _height(height), _near(n), _far(f) {
     
     lookAt(eye, at, up);
+
+    Vector3 viewDir = normalize(at - eye);
+    _pitch = asinf(-viewDir.y); // -viewDir.y
+    _yaw   = atan2f(viewDir.x, -viewDir.z);
 }
 
 int32 Camera::width() const {
@@ -76,7 +80,14 @@ Mat4 Camera::viewProjMatrix() const {
 }
 
 void Camera::updateViewMatrix() {
+    Matrix4x4 rotX = rotationAxis(_pitch, Vector3(1, 0, 0));
+    Matrix4x4 rotY = rotationAxis(_yaw,   Vector3(0, 1, 0));
 
+    Matrix4x4 orientation = rotX * rotY;
+
+    _objToWorld = orientation * translation(-_position);
+
+    //_objToWorld = translation(-_position) * _orientation.toMatrix();
 }
 
 void Camera::updateOrientation(float dpdx, float dydx) {
@@ -94,4 +105,19 @@ void Camera::updateOrientation(float dpdx, float dydx) {
         _pitch = -PI / 2.0f;
 
     updateViewMatrix();*/
+
+    _pitch += dpdx;
+    _yaw   -= dydx;
+
+    // Normalize angles
+    _yaw = fmodf(_yaw, 2.0f * PI);
+    if (_yaw < 0.0f)
+        _yaw += 2.0f * PI;
+
+    if (_pitch > PI / 2.0f)
+        _pitch = PI / 2.0f;
+    else if (_pitch < -PI / 2.0f)
+        _pitch = -PI / 2.0f;
+
+    //updateViewMatrix();
 }

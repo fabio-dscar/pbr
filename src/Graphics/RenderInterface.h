@@ -96,6 +96,7 @@ namespace pbr {
         void setVector4(const std::string& name, const Vec4& vec);
         void setMatrix3(const std::string& name, const Mat3& mat);
         void setMatrix4(const std::string& name, const Mat4& mat);
+        void setSampler(const std::string& name, uint32 id);
 
         void setFloat  (int32 loc, float val);
         void setVector3(int32 loc, const Vec3& vec);
