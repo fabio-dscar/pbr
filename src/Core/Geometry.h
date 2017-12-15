@@ -15,7 +15,7 @@ namespace pbr {
         Vec3 position;
         Vec3 normal;
         Vec2 uv;
-        //Vec3 tangent;
+        Vec3 tangent;
     };
 
     class PBR_SHARED Geometry {
@@ -37,7 +37,7 @@ namespace pbr {
         BBox3   bbox()    const;
         BSphere bSphere() const;
 
-        //void computeTangents();
+        void computeTangents();
 
     private:
         RRID _id;

@@ -78,6 +78,10 @@ BSphere Geometry::bSphere() const {
     return box.sphere();
 }
 
+void Geometry::computeTangents() {
+
+}
+
 void pbr::genSphereGeometry(Geometry& geo, float radius, uint32 widthSegments, uint32 heightSegments) {
     uint32 index = 0;
     Vertex vert;

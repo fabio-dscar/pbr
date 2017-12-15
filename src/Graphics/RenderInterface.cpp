@@ -363,7 +363,8 @@ RRID RenderInterface::uploadGeometry(const sref<Geometry>& geo) {
 
     BufferLayoutEntry entries[] = { { 0, 3, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, position) },
                                     { 1, 3, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, normal) },
-                                    { 2, 2, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, uv) } };
+                                    { 2, 2, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, uv) },
+                                    { 3, 3, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, tangent) } };
 
     BufferLayout layout = { 3, &entries[0] };
     setBufferLayout(vboIds[0], layout);
