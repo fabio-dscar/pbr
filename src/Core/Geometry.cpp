@@ -80,6 +80,37 @@ BSphere Geometry::bSphere() const {
 
 void Geometry::computeTangents() {
 
+	std::vector<Vec3> tan(_vertices.size(), Vec3(0,0,0));
+
+	for (int i = 0; i < _indices.size(); i = i + 3) {
+		Vertex v1 = _vertices[_indices[i]];
+		Vertex v2 = _vertices[_indices[i + 1]];
+		Vertex v3 = _vertices[_indices[i + 2]];
+
+		Vec3 xyz1 = v2.position - v1.position;
+		Vec3 xyz2 = v3.position - v1.position;
+
+		Vec2 s = v2.uv - v1.uv;
+		Vec2 t = v3.uv - v1.uv;
+
+		float r = 1.0f / (s.x * t.y - s.y * t.x);
+
+		Vec3 sdir = Vec3((t.y * xyz1.x - t.x * xyz2.x) * r, (t.y * xyz1.y - t.x * xyz2.y) * r, (t.y * xyz1.z - t.x * xyz2.z) * r);
+
+		tan[_indices[i]] += sdir;
+		tan[_indices[i + 1]] += sdir;
+		tan[_indices[i + 2]] += sdir;
+	}
+
+	for (int i = 0; i < _vertices.size(); i++) {
+		Vec3 normal = _vertices[i].normal;
+		Vec3 t = tan[i];
+
+		Vec3 tangent = normalize(t - normal * (dot(normal, t)));
+
+		_vertices[i].tangent = tangent;
+	}
+
 }
 
 void pbr::genSphereGeometry(Geometry& geo, float radius, uint32 widthSegments, uint32 heightSegments) {
