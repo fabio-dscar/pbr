@@ -1108,3 +1108,10 @@ void RenderInterface::bindTexture(uint32 slot, RRID id) {
     glActiveTexture(GL_TEXTURE0 + slot);
     bindTexture(id);
 }
+
+sref<Image> RenderInterface::getImage(int32 x, int32 y, int32 w, int32 h) const {
+    sref<Image> img = make_sref<Image>();
+    img->init(IMGFMT_RGB8, w, h, 1, 1);
+    glReadPixels(x, y, w, h, GL_RGB, GL_UNSIGNED_BYTE, img->data());
+    return img;
+}

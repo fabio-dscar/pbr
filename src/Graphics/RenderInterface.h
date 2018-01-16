@@ -161,6 +161,8 @@ namespace pbr {
 
         bool isOpenGLError();
         void checkOpenGLError(const std::string& error);
+
+        sref<Image> getImage(int32 x, int32 y, int32 w, int32 h) const;
     private:
         RenderInterface();
 

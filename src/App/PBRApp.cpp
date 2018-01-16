@@ -293,5 +293,7 @@ void PBRApp::changeSkybox(int id) {
 }
 
 void PBRApp::takeSnapshot() {
-
+    sref<Image> img = RHI.getImage(0, 0, _width, _height);
+    img->flipY();
+    img->saveImage("snapshot.png");
 }
