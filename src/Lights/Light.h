@@ -19,7 +19,7 @@ namespace pbr {
 
     // Light data for shader blocks
     // CARE: data is properly aligned, do not change
-    struct LightData {
+    /*struct LightData {
         bool      state;      // On/off flag
         LightType type;       // Light type
         uint8     aux[2];      
@@ -30,7 +30,15 @@ namespace pbr {
         Vec3      sideU;      
         float     auxC;
         Vec3      sideV;
-    }; // 64 Bytes
+    }; // 64 Bytes*/
+
+    struct LightData {
+        Vec3      position;   // Light position / direction for dir lights
+        float     auxA;
+        Color     emission;   // Non normalized emission (already multiplied by intensity)
+        int       type;
+        bool      state;      // On/off flag
+    }; // 
 
     class PBR_SHARED Light : public SceneObject {
     public:

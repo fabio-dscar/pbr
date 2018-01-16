@@ -7,7 +7,11 @@
 
 #include <Image.h>
 #include <Texture.h>
+#include <Resources.h>
 
+#include <Renderer.h>
+
+using namespace pbr;
 using namespace pbr::math;
 
 const GLenum OGLShaderTypes[] = {
@@ -265,7 +269,7 @@ RenderInterface& RenderInterface::get() {
     return _inst;
 }
 
-GLuint createTexture(const Image& img, const TexSampler& sampler) {
+/*GLuint createTexture(const Image& img, const TexSampler& sampler) {
     GLuint id = 0;
     GLenum target = OGLTexTargets[img.type()];
 
@@ -300,51 +304,153 @@ GLuint createTexture(const Image& img, const TexSampler& sampler) {
     glBindTexture(target, 0);
 
     return id;
-}
+}*/
 
 void RenderInterface::initialize() {
     _programs.push_back({ 0 });
     _currProgram = 0;
     
+    // Load BRDF precomputation
+    TexSampler brdfSampler;
+    Image brdf;
+    brdf.loadImage("brdf.img");
+    RRID brdfId = createTexture(brdf, brdfSampler);
+    Resource.addTexture("brdf", RHI.getTexture(brdfId));
+    
+    // Load cubemap
+    TexSampler cubeSampler;
+    cubeSampler.setFilterMode(FILTER_LINEAR, FILTER_LINEAR);
+    cubeSampler.setWrapMode(WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE);
+    
+    Cubemap cube;
+    cube.loadCubemap("cube.cube");
+    RRID cubeId = createCubemap(cube, cubeSampler);
+    Resource.addTexture("sky", RHI.getTexture(cubeId));
+    
+    Cubemap irradianceCube;
+    irradianceCube.loadCubemap("irradiance.cube");
+    RRID irrCubeId = createCubemap(irradianceCube, cubeSampler);
+    Resource.addTexture("irradiance", RHI.getTexture(irrCubeId));
+
+    TexSampler ggxSampler;
+    ggxSampler.setFilterMode(FILTER_LINEAR_MIP_LINEAR, FILTER_LINEAR);
+    ggxSampler.setWrapMode(WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE);
+
+    Cubemap ggxCube;
+    ggxCube.loadCubemap("ggx.cube");
+    RRID ggxCubeId = createCubemap(ggxCube, ggxSampler);
+    Resource.addTexture("ggx", RHI.getTexture(ggxCubeId));
+    
     // Load standard engine shaders
-    ShaderSource vsLighting(VERTEX_SHADER,   "lighting.vs");
-    ShaderSource fsLighting(FRAGMENT_SHADER, "lighting.fs");
+    ShaderSource fsCommon(FRAGMENT_SHADER, "common.fs");
+
+    // Load unreal shader
+    ShaderSource vsUnreal(VERTEX_SHADER, "unreal.vs");
+    ShaderSource fsUnreal(FRAGMENT_SHADER, "unreal.fs");
+
+    sref<Shader> unrealProg = make_sref<Shader>("unreal");
+    unrealProg->addShader(vsUnreal);
+    unrealProg->addShader(fsUnreal);
+    unrealProg->addShader(fsCommon);
+    unrealProg->link();
+    Resource.addShader("unreal", unrealProg);
+
+    RHI.useProgram(unrealProg->id());
+    RHI.setSampler("irradianceTex", 6);
+    RHI.setSampler("ggxTex",        7);
+    RHI.setSampler("brdfTex",       8);
+    RHI.setBufferBlock("cameraBlock",   CAMERA_BUFFER_IDX);
+    RHI.setBufferBlock("rendererBlock", RENDERER_BUFFER_IDX);
+    RHI.setBufferBlock("lightBlock",    LIGHTS_BUFFER_IDX);
+    RHI.useProgram(0);
+
+    // Load environment shader
+    ShaderSource vsSkybox(VERTEX_SHADER,   "skybox.vs");
+    ShaderSource fsSkybox(FRAGMENT_SHADER, "skybox.fs");
+    sref<Shader> skyProg = make_sref<Shader>("skybox");
+    skyProg->addShader(vsSkybox);
+    skyProg->addShader(fsSkybox);
+    skyProg->addShader(fsCommon);
+    skyProg->link();
+
+    Resource.addShader("skybox", skyProg);
+
+    RHI.useProgram(skyProg->id());
+    skyProg->registerUniform("envMap");
+    RHI.setSampler("envMap", 5);
+    RHI.setBufferBlock("rendererBlock", RENDERER_BUFFER_IDX);
+    RHI.setBufferBlock("cameraBlock",   CAMERA_BUFFER_IDX);
+    RHI.useProgram(0);
+
+    
+    ShaderSource vsLighting(VERTEX_SHADER,      "lighting.vs");
+    ShaderSource vsLightingTex(VERTEX_SHADER,   "lightingTex.vs");
+    ShaderSource fsLighting(FRAGMENT_SHADER,    "lighting.fs");
     ShaderSource fsLightingTex(FRAGMENT_SHADER, "lightingTex.fs");
     
-    Shader prog("lighting");
-    prog.addShader(vsLighting);
-    prog.addShader(fsLighting);
-    prog.link();
+    sref<Shader> prog = make_sref<Shader>("lighting");
+    prog->addShader(vsLighting);
+    prog->addShader(fsLighting);
+    prog->addShader(fsCommon);
+    prog->link();
 
-    RHI.useProgram(prog.id());
-    prog.registerUniformBlock("cameraBlock");
-    RHI.setBufferBlock("cameraBlock", 0);
+    Resource.addShader("lighting", prog);
+
+    RHI.useProgram(prog->id());
+    prog->registerUniformBlock("cameraBlock");
+    RHI.setBufferBlock("cameraBlock",   CAMERA_BUFFER_IDX);
+    RHI.setBufferBlock("rendererBlock", RENDERER_BUFFER_IDX);
     RHI.useProgram(0);
+    
+    prog->registerUniform("ModelMatrix");
+    prog->registerUniform("NormalMatrix");
 
-    prog.registerUniform("ModelMatrix");
-    prog.registerUniform("NormalMatrix");
+    sref<Shader> progTex = make_sref<Shader>("lightingTex");
+    progTex->addShader(vsLightingTex);
+    progTex->addShader(fsLightingTex);
+    progTex->link();
 
-    Shader progTex("lightingTex");
-    progTex.addShader(vsLighting);
-    progTex.addShader(fsLightingTex);
-    progTex.link();
+    Resource.addShader("lightingTex", progTex);
 
-    progTex.registerUniform("ModelMatrix");
-    progTex.registerUniform("NormalMatrix");
+    progTex->registerUniform("ModelMatrix");
+    progTex->registerUniform("NormalMatrix");
 
-    Image tex;
+    Image tex, tex2;
     tex.loadImage("floor.png");
     TexSampler sampler;
-    GLuint id = createTexture(tex, sampler);
-    RHI.useProgram(progTex.id());
-    progTex.registerUniformBlock("cameraBlock");
-    progTex.registerUniform("diffTex");
-    setSampler("diffTex", 1);
-    RHI.setBufferBlock("cameraBlock", 0);
+    RRID id  = createTexture(tex, sampler);
+    tex2.loadImage("bump.png");
+    RRID id2 = createTexture(tex2, sampler);
+    RHI.useProgram(progTex->id());
+    progTex->registerUniformBlock("cameraBlock");
+    progTex->registerUniform("diffTex");
+    progTex->registerUniform("bumpMap");
+    RHI.setSampler("diffTex", 1);
+    RHI.setSampler("bumpMap", 2);
+    RHI.setBufferBlock("cameraBlock", CAMERA_BUFFER_IDX);
     RHI.useProgram(0);
+    
+    // Bind common textures
 
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, id);
+    RHI.bindTexture(id);
+
+    glActiveTexture(GL_TEXTURE2);
+    RHI.bindTexture(id2);
+    
+    glActiveTexture(GL_TEXTURE5);
+    RHI.bindTexture(cubeId);
+
+    // Set PBR cubemaps
+    glActiveTexture(GL_TEXTURE6);
+    RHI.bindTexture(irrCubeId);
+
+    glActiveTexture(GL_TEXTURE7);
+    RHI.bindTexture(ggxCubeId);
+
+    // Set BRDF precomputation
+    glActiveTexture(GL_TEXTURE8);
+    RHI.bindTexture(brdfId);
 }
 
 RRID RenderInterface::uploadGeometry(const sref<Geometry>& geo) {
@@ -358,7 +464,7 @@ RRID RenderInterface::uploadGeometry(const sref<Geometry>& geo) {
     glBindVertexArray(vertArray.id);
 
     // Create VBOs for vertex data and indices
-    RRID vboIds[2];
+    RRID vboIds[2] = { 0, 0 };
     vboIds[0] = createBuffer(BUFFER_VERTEX, BufferUsage::STATIC, sizeof(Vertex) * verts.size(), &verts[0]);
 
     BufferLayoutEntry entries[] = { { 0, 3, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, position) },
@@ -366,10 +472,11 @@ RRID RenderInterface::uploadGeometry(const sref<Geometry>& geo) {
                                     { 2, 2, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, uv) },
                                     { 3, 3, ATTRIB_FLOAT, sizeof(Vertex), offsetof(Vertex, tangent) } };
 
-    BufferLayout layout = { 3, &entries[0] };
+    BufferLayout layout = { 4, &entries[0] };
     setBufferLayout(vboIds[0], layout);
 
-    vboIds[1] = createBuffer(BUFFER_INDEX, BufferUsage::STATIC, sizeof(uint32) * indices.size(), &indices[0]);
+    if (indices.size() > 0)
+        vboIds[1] = createBuffer(BUFFER_INDEX, BufferUsage::STATIC, sizeof(uint32) * indices.size(), &indices[0]);
 
     // Associate created VBOs with the VAO
     vertArray.buffers.push_back(vboIds[0]);
@@ -729,4 +836,275 @@ bool RenderInterface::isOpenGLError() {
         std::cerr << "OpenGL ERROR [" << errString << "]." << std::endl;
     }
     return isError;
+}
+
+RRID RenderInterface::createTexture(const Image& img, const TexSampler& sampler) {
+    GLuint id = 0;
+    GLenum target = OGLTexTargets[img.type()];
+
+    RRID resId = _textures.size();
+
+    glGenTextures(1, &id);
+    glBindTexture(target, id);
+
+    GLenum pType  = OGLTexPixelTypes[img.compType()];
+    GLenum oglFmt = OGLTexPixelFormats[img.format()];
+
+    // Upload all levels
+    ImageType type = img.type();
+    for (uint32 lvl = 0; lvl < img.numLevels(); ++lvl) {
+        uint32 w = mipDimension(img.width(), lvl);
+        uint32 h = mipDimension(img.height(), lvl);
+        uint32 d = mipDimension(img.depth(), lvl);
+
+        if (type == IMGTYPE_2D)
+            glTexImage2D(target, lvl, oglFmt, w, h, 0, oglFmt, pType, img.data(lvl));
+        else if (type == IMGTYPE_1D)
+            glTexImage1D(target, lvl, oglFmt, w, 0, oglFmt, pType, img.data(lvl));
+        else if (type == IMGTYPE_3D)
+            glTexImage3D(target, lvl, oglFmt, w, h, d, 0, oglFmt, pType, img.data(lvl));
+    }
+
+    glTexParameteri(target, GL_TEXTURE_WRAP_S,     OGLTexWrapping[sampler.sWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T,     OGLTexWrapping[sampler.tWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R,     OGLTexWrapping[sampler.rWrap()]);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, OGLTexFilters[sampler.minFilter()]);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, OGLTexFilters[sampler.magFilter()]);
+
+    // Unbind texture
+    glBindTexture(target, 0);
+
+    TexFormat fmt;
+    fmt.imgFmt  = img.format();
+    fmt.imgType = img.type();
+    fmt.levels  = img.numLevels();
+    fmt.pType   = img.compType();
+
+    sref<Texture> tex = make_sref<GPUTexture>(resId, img.width(), img.height(), img.depth(), sampler, fmt);
+
+    _textures.push_back({ id, target, oglFmt, oglFmt, pType, tex });
+
+    return resId;
+}
+
+// Create texture
+RRID RenderInterface::createTexture(ImageType type, ImageFormat fmt, uint32 width, uint32 height, uint32 depth, const TexSampler& sampler) {
+    GLuint id = 0;
+    GLenum target = OGLTexTargets[type];
+
+    RRID resId = _textures.size();
+
+    if (type == IMGTYPE_2D) {
+        depth = 1;
+    } else if (type == IMGTYPE_1D) {
+        height = depth = 1;
+    }
+
+    if (type == IMGTYPE_2D && sampler.numSamples() > 0)
+        target = GL_TEXTURE_2D_MULTISAMPLE;
+
+    glGenTextures(1, &id);
+    glBindTexture(target, id);
+
+    GLenum intFormat = OGLTexSizedFormats[fmt];
+    if (type == IMGTYPE_2D && sampler.numSamples() > 0)
+        glTexImage2DMultisample(target, sampler.numSamples(), intFormat, width, height, GL_TRUE);
+
+    // Set the sampler
+    glTexParameteri(target, GL_TEXTURE_WRAP_S,     OGLTexWrapping[sampler.sWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T,     OGLTexWrapping[sampler.tWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R,     OGLTexWrapping[sampler.rWrap()]);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, OGLTexFilters[sampler.minFilter()]);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, OGLTexFilters[sampler.magFilter()]);
+
+    // Unbind texture
+    glBindTexture(target, 0);
+
+    TexFormat texFmt;
+    texFmt.imgFmt  = fmt;
+    texFmt.imgType = type;
+    texFmt.pType   = formatToImgComp(fmt);
+    texFmt.levels  = 1;
+
+    sref<Texture> tex = make_sref<GPUTexture>(resId, width, height, depth, sampler, texFmt);
+
+    _textures.push_back({ id, target, intFormat, OGLTexPixelFormats[fmt], OGLTexPixelTypes[texFmt.pType], tex });
+
+    return resId;
+}
+
+RRID RenderInterface::createCubemap(const Cubemap& cube, const TexSampler& sampler) {
+    GLuint id = 0;
+    GLenum target = OGLTexTargets[ImageType::IMGTYPE_CUBE];
+
+    RRID resId = _textures.size();
+
+    GLenum pType  = OGLTexPixelTypes[cube.compType()];
+    GLenum oglFmt = OGLTexPixelFormats[cube.format()];
+
+    glGenTextures(1, &id);
+    glBindTexture(target, id);
+    
+    if (cube.numLevels() > 1) {
+        glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, 4);
+        //glGenerateMipmap(target);
+    }
+
+    for (uint32 side = 0; side < 6; side++) {
+        const Image* img = cube.face((CubemapFace)side);
+
+        // Upload all levels for the face
+        for (uint32 lvl = 0; lvl < img->numLevels(); ++lvl) {
+            uint32 w = mipDimension(img->width(),  lvl);
+            uint32 h = mipDimension(img->height(), lvl);
+
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + side, lvl, oglFmt, w, h, 0, oglFmt, pType, img->data(lvl));
+        }
+    }
+
+    glTexParameteri(target, GL_TEXTURE_WRAP_S,     OGLTexWrapping[sampler.sWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_T,     OGLTexWrapping[sampler.tWrap()]);
+    glTexParameteri(target, GL_TEXTURE_WRAP_R,     OGLTexWrapping[sampler.rWrap()]);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, OGLTexFilters[sampler.minFilter()]);
+    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, OGLTexFilters[sampler.magFilter()]);
+
+    // Unbind texture
+    glBindTexture(target, 0);
+
+    TexFormat fmt;
+    fmt.imgFmt  = cube.format();
+    fmt.imgType = IMGTYPE_CUBE;
+    fmt.levels  = cube.numLevels();
+    fmt.pType   = cube.compType();
+
+    sref<Texture> tex = make_sref<GPUTexture>(resId, cube.width(), cube.height(), 1, sampler, fmt);
+
+    _textures.push_back({ id, target, oglFmt, oglFmt, pType, tex });
+
+    return resId;
+}
+
+sref<Texture> RenderInterface::getTexture(RRID id) {
+    if (id < 0 || id >= _textures.size())
+        return nullptr; // Error
+
+    RHITexture tex = _textures[id];
+    if (tex.id == 0 || tex.tex == nullptr)
+        return nullptr; // Error
+
+    return tex.tex;
+}
+
+bool RenderInterface::readTexture(RRID id, Image& img) {
+    if (id < 0 || id >= _textures.size())
+        return false; // Error
+
+    RHITexture tex = _textures[id];
+    if (tex.id == 0)
+        return false; // Error
+
+    TexFormat fmt = tex.tex->format();
+    if (fmt.imgType == IMGTYPE_CUBE)
+        return false; // Error
+
+    img.init(fmt.imgFmt, tex.tex->width(), tex.tex->height(), tex.tex->depth(), fmt.levels);
+
+    glBindTexture(tex.target, tex.id);
+    for (uint32 lvl = 0; lvl < fmt.levels; ++lvl)
+        glGetTexImage(tex.target, 0, tex.format, tex.pType, img.data(lvl));
+    glBindTexture(tex.target, 0);
+
+    return true;
+}
+
+bool RenderInterface::readCubemap(RRID id, Cubemap& cube) {
+    if (id < 0 || id >= _textures.size())
+        return false; // Error
+
+    RHITexture tex = _textures[id];
+    if (tex.id == 0)
+        return false; // Error
+
+    TexFormat fmt = tex.tex->format();
+    if (fmt.imgType != IMGTYPE_CUBE)
+        return false; // Error
+
+    cube.init(fmt.imgFmt, tex.tex->width(), tex.tex->height(), fmt.levels);
+
+    glBindTexture(tex.target, tex.id);
+    for (uint32 f = 0; f < 6; ++f)
+        for (uint32 lvl = 0; lvl < fmt.levels; ++lvl)
+            glGetTexImage(tex.target, 0, tex.format, tex.pType, cube.data((CubemapFace)f, lvl));
+    glBindTexture(tex.target, 0);
+
+    return true;
+}
+
+void RenderInterface::generateMipmaps(RRID id) {
+    if (id < 0 || id >= _textures.size())
+        return; // Error
+
+    RHITexture ogltex = _textures[id];
+    if (ogltex.id == 0)
+        return; // Error
+
+    glBindTexture(ogltex.target, ogltex.id);
+    glGenerateMipmap(ogltex.target);
+    glBindTexture(ogltex.target, 0);
+}
+
+void RenderInterface::setTextureData(RRID id, uint32 level, const void* pixels) {
+    if (id < 0 || id >= _textures.size())
+        return; // Error
+
+    RHITexture ogltex = _textures[id];
+    if (ogltex.id == 0)
+        return; // Error
+
+    glBindTexture(ogltex.target, ogltex.id);
+
+    GLsizei width  = ogltex.tex->width();
+    GLsizei height = ogltex.tex->height();
+    GLsizei depth  = ogltex.tex->depth();
+
+    const TexFormat& fmt = ogltex.tex->format();
+    GLenum type = OGLTexPixelTypes[fmt.pType];
+    if (fmt.imgType == IMGTYPE_2D)
+        glTexImage2D(ogltex.target, level, ogltex.intFormat, width, height, 0, ogltex.format, type, pixels);
+    else if (fmt.imgType == IMGTYPE_1D)
+        glTexImage1D(ogltex.target, level, ogltex.intFormat, width, 0, ogltex.format, type, pixels);
+    else if (fmt.imgType == IMGTYPE_3D)
+        glTexImage3D(ogltex.target, level, ogltex.intFormat, width, height, depth, 0, ogltex.format, type, pixels);
+
+    glBindTexture(ogltex.target, 0);
+}
+
+bool RenderInterface::deleteTexture(RRID id) {
+    if (id < (int64)_textures.size() && id != -1) {
+        GLuint oglId = _textures[id].id;
+        if (oglId != 0) {
+            glDeleteTextures(1, &oglId);
+            _textures[id].id = 0;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void RenderInterface::bindTexture(RRID id) {
+    if (id < 0 || id >= _textures.size())
+        return; // Error
+
+    RHITexture ogltex = _textures[id];
+    if (ogltex.id == 0)
+        return; // Error
+
+    glBindTexture(ogltex.target, ogltex.id);
+}
+
+void RenderInterface::bindTexture(uint32 slot, RRID id) {
+    glActiveTexture(GL_TEXTURE0 + slot);
+    bindTexture(id);
 }

@@ -1,11 +1,11 @@
-#version 330
+#version 400
 
 // Math constants
 const float PI = 3.14159265358979;
 
 /* ==============================================================================
         Utils
- ==============================================================================*/
+ ============================================================================== */
 
 // From inverse gamma space to linear
 vec3 toLinearRGB(vec3 c, float gamma) {
@@ -17,10 +17,33 @@ vec3 toInverseGamma(vec3 c, float gamma) {
     return pow(c, vec3(1.0 / gamma));
 }
 
+vec3 simpleToneMap(vec3 c, float exp) {
+	vec3 color = exp * c;
+	return color / (color + vec3(1.0));
+}
+
+vec3 unchartedTonemap(vec3 c, float exp) {
+	float A = 0.15;
+	float B = 0.50;
+	float C = 0.10;
+	float D = 0.20;
+	float E = 0.02;
+	float F = 0.30;
+	float W = 11.2;
+
+	c = exp * c;
+	return ((c * (A * c + C * B) + D * E) / (c * (A * c + B) + D * F)) - E/F;
+}
+
+vec3 unchartedTonemapParam(vec3 c, float exp, float A, float B, float C, float D, float E, float J, float W) {
+	c = exp * c;
+	return ((c * (A * c + C * B) + D * E) / (c * (A * c + B) + D * J)) - E/J;
+}
+
 // Convert to Y component of XYZ color space
 float luminance(vec3 c) {
     vec3 RGBtoY = vec3(0.2126, 0.7152, 0.0722);
-    return dot(c, Y);
+    return dot(c, RGBtoY);
 }
 
 // [Schlick, 1994] - "An Inexpensive BRDF Model for Physically-based Rendering"
@@ -29,11 +52,15 @@ float fresnelSchlick(float cosTheta){
     return pow(A, 5);
 }
 
+vec3 fresnelSchlickUnreal(float cosTheta, vec3 F0) {
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}
+
 // --------------------------------------------------------------------------
 
 /* ============================================================================
         Diffuse BRDFs
- ============================================================================*/
+ ============================================================================ */
 
 float brdfLambert() {
     return 1.0 / PI;
@@ -116,8 +143,8 @@ float geoSmith(vec3 N, vec3 V, vec3 L, float roughness) {
     float NdotL = max(dot(N, L), 0.0);
     float NdotV = max(dot(N, V), 0.0);
 
-    float GGX1 = GeoGGX(NdotV, roughness);
-    float GGX2 = GeoGGX(NdotL, roughness);
+    float GGX1 = geoGGX(NdotV, roughness);
+    float GGX2 = geoGGX(NdotL, roughness);
 
     return GGX1 * GGX2;
 }

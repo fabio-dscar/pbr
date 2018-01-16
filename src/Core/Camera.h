@@ -6,6 +6,8 @@
 namespace pbr {
 
     struct CameraData {
+        Mat4 viewMatrix;
+        Mat4 projMatrix;
         Mat4 viewProjMatrix;
         Vec3 viewPos;
     };

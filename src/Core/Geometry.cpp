@@ -21,8 +21,8 @@ namespace std {
     template<> struct hash<ObjVertex> {
         size_t operator()(ObjVertex const& vertex) const {
             return ((hash<Vec3>()(vertex.pos) ^
-                (hash<Vec3>()(vertex.normal) << 1)) >> 1) ^
-                     (hash<Vec2>()(vertex.texCoord) << 1);
+                    (hash<Vec3>()(vertex.normal) << 1)) >> 1) ^
+                    (hash<Vec2>()(vertex.texCoord) << 1);
         }
     };
 }
@@ -240,7 +240,7 @@ bool pbr::loadObj(const std::string& filePath, ObjFile& obj) {
                     attrib.normals[3 * index.normal_index + 2]
                 };
             }
-
+            
             if (attrib.texcoords.size() > 0) {
                 vertex.texCoord = {
                     attrib.texcoords[2 * index.texcoord_index + 0],
@@ -263,4 +263,62 @@ void pbr::fromObjFile(Geometry& geo, const ObjFile& objFile) {
 
     for (const ObjVertex& v : objFile.vertices)
         geo.addVertex({ v.pos, v.normal, v.texCoord });
+
+    geo.computeTangents();
+}
+
+void pbr::genUnitCubeGeometry(Geometry& geo) {
+    float vertices[] = {
+        // back face
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        1.0f,  1.0f, -1.0f, // top-right
+        1.0f, -1.0f, -1.0f, // bottom-right         
+        1.0f,  1.0f, -1.0f, // top-right
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f,  1.0f, -1.0f, // top-left
+                                                              // front face
+        -1.0f, -1.0f,  1.0f, // bottom-left
+        1.0f, -1.0f,  1.0f, // bottom-right
+        1.0f,  1.0f,  1.0f, // top-right
+        1.0f,  1.0f,  1.0f, // top-right
+        -1.0f,  1.0f,  1.0f, // top-left
+        -1.0f, -1.0f,  1.0f, // bottom-left
+                                                            // left face
+        -1.0f,  1.0f,  1.0f, // top-right
+        -1.0f,  1.0f, -1.0f, // top-left
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f, -1.0f, -1.0f, // bottom-left
+        -1.0f, -1.0f,  1.0f, // bottom-right
+        -1.0f,  1.0f,  1.0f, // top-right
+                                                                // right face
+        1.0f,  1.0f,  1.0f, // top-left
+        1.0f, -1.0f, -1.0f, // bottom-right
+        1.0f,  1.0f, -1.0f, // top-right         
+        1.0f, -1.0f, -1.0f, // bottom-right
+        1.0f,  1.0f,  1.0f, // top-left
+        1.0f, -1.0f,  1.0f, // bottom-left     
+                                                        // bottom face
+        -1.0f, -1.0f, -1.0f,  // top-right
+        1.0f, -1.0f, -1.0f,  // top-left
+        1.0f, -1.0f,  1.0f, // bottom-left
+        1.0f, -1.0f,  1.0f,  // bottom-left
+        -1.0f, -1.0f,  1.0f,  // bottom-right
+        -1.0f, -1.0f, -1.0f, // top-right
+                                                                // top face
+        -1.0f,  1.0f, -1.0f, // top-left
+        1.0f,  1.0f , 1.0f, // bottom-right
+        1.0f,  1.0f, -1.0f,   // top-right     
+        1.0f,  1.0f,  1.0f,  // bottom-right
+        -1.0f,  1.0f, -1.0f,   // top-left
+        -1.0f,  1.0f,  1.0f  // bottom-left        
+    };
+
+
+    for (uint32 i = 0; i < 36; i++) {
+        Vertex vert;
+        vert.position = Vec3(vertices[3 * i], 
+                             vertices[3 * i + 1], 
+                             vertices[3 * i + 2]);
+        geo.addVertex(vert);
+    }
 }

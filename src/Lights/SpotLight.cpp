@@ -31,6 +31,6 @@ void SpotLight::toData(LightData& data) const {
     data.emission = _intensity * _emission;
     data.position = position();
     data.auxA     = _cutoff;
-    data.auxB     = _outerCutoff;
-    data.sideU    = direction();
+    /*data.auxB     = _outerCutoff;
+    data.sideU    = direction();*/
 }

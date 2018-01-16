@@ -5,9 +5,9 @@
 
 using namespace pbr;
 
-Shape::Shape() { }
-Shape::Shape(const Vec3& position) : SceneObject(position) { }
-Shape::Shape(const Mat4& objToWorld) : SceneObject(objToWorld) { }
+Shape::Shape() : _material(nullptr) { }
+Shape::Shape(const Vec3& position) : SceneObject(position), _material(nullptr) { }
+Shape::Shape(const Mat4& objToWorld) : SceneObject(objToWorld), _material(nullptr) { }
 
 const sref<Geometry>& Shape::geometry() const {
     return _geometry;
@@ -24,4 +24,12 @@ void Shape::updateMatrix() {
 
 const Mat3& Shape::normalMatrix() const {
     return _normalMatrix;
+}
+
+void Shape::setMaterial(const sref<Material>& mat) {
+    _material = mat;
+}
+
+void Shape::updateMaterial(const Skybox& skybox) {
+    _material->update(skybox);
 }

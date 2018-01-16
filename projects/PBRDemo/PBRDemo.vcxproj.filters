@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{7fc80acc-947e-4e8a-ad9f-849414333eff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{33a028eb-4e11-4b1f-976b-27acaddea821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{a90576af-dcb7-43f7-97fd-c3f8552c3d95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Math\PBRMath.cpp">
@@ -164,6 +170,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Core\Texture.cpp">
       <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Core\Skybox.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Materials\Material.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Materials\PBRMaterial.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\imgui\imgui.cpp">
+      <Filter>External</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GUI\GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\imgui\imgui_draw.cpp">
+      <Filter>External</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +298,33 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Core\Texture.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Core\Skybox.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Materials\PBRMaterial.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\GUI\GUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\imconfig.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\imgui.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\imgui_internal.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\stb_rect_pack.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\stb_textedit.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\imgui\stb_truetype.h">
+      <Filter>External</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

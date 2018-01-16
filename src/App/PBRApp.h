@@ -5,6 +5,7 @@
 
 #include <Scene.h>
 #include <Renderer.h>
+#include <Skybox.h>
 
 namespace pbr {
 
@@ -20,6 +21,10 @@ namespace pbr {
         void processKeyPress(unsigned char key, int x, int y) override;
         void processMouseClick(int button, int state, int x, int y) override;
     private:
+        void drawInterface();
+        void restoreToneDefaults();
+        void changeSkybox(int id);
+
         Scene    _scene;
         Renderer _renderer;
 
@@ -27,6 +32,18 @@ namespace pbr {
 
         float _rotAngleX;
         float _rotAngleY;
+
+        float _gamma;
+        float _exposure;
+        float _toneParams[7];
+
+        bool _showGUI;
+        bool _skyToggle;
+
+        Shape* _selectedShape;
+
+        int _skybox;
+        vec<Skybox> _skyboxes;
     };
 
 }

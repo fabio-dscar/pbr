@@ -6,6 +6,7 @@
 #include <PBR.h>
 #include <PBRMath.h>
 #include <Shader.h>
+#include <Image.h>
 
 // Macro to syntax sugar the singleton getter
 #define RHI RenderInterface::get()
@@ -15,6 +16,8 @@ using namespace pbr::math;
 namespace pbr {
 
     class Geometry;
+    class TexSampler;
+    class Texture;
 
     template<class T>
     using vec = std::vector<T>;
@@ -33,6 +36,15 @@ namespace pbr {
     
     struct RHIProgram {
         GLuint id;
+    };
+
+    struct RHITexture {
+        GLuint id;
+        GLenum target;
+        GLenum intFormat;
+        GLenum format;
+        GLenum pType;
+        sref<Texture> tex;
     };
 
     struct RHIBuffer {
@@ -75,10 +87,29 @@ namespace pbr {
     class RenderInterface {
     public:
         ~RenderInterface();
-
+        
         static RenderInterface& get();
 
         void initialize();
+
+        /* ===================================================================================
+                Textures
+        =====================================================================================*/
+        RRID createTexture(const Image& img, const TexSampler& sampler);
+        RRID createTexture(ImageType type, ImageFormat fmt, uint32 width, uint32 height,
+                                    uint32 depth, const TexSampler& sampler);
+        RRID createCubemap(const Cubemap& cube, const TexSampler& sampler);
+
+        sref<Texture> getTexture(RRID id);
+        bool readTexture(RRID id, Image& img);
+        bool readCubemap(RRID id, Cubemap& cube);
+
+        void generateMipmaps(RRID id);
+        void setTextureData(RRID id, uint32 level, const void* pixels);
+        bool deleteTexture(RRID id);
+
+        void bindTexture(RRID id);
+        void bindTexture(uint32 slot, RRID id);
 
         /* ===================================================================================
                 Shaders
@@ -139,6 +170,7 @@ namespace pbr {
         vec<RHIVertArray> _vertArrays;
         vec<RHIBuffer>    _buffers;
         vec<RHIProgram>   _programs;
+        vec<RHITexture>   _textures;
     };
 
 }

@@ -4,6 +4,7 @@
 #include <SceneObject.h>
 #include <Bounds.h>
 #include <Ray.h>
+#include <Skybox.h>
 
 using namespace pbr::math;
 
@@ -33,6 +34,9 @@ namespace pbr {
         virtual bool intersect(const Ray& ray, RayHitInfo& info) const = 0;
 
         void updateMatrix() override;
+
+        void setMaterial(const sref<Material>& mat);
+        void updateMaterial(const Skybox& skybox);
 
         RRID _prog;
 

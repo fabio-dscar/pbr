@@ -7,12 +7,24 @@ in FragData {
 	vec2 texCoords;
 } vsIn;
 
+uniform rendererBlock {
+	float gamma;
+	float exposure;
+};
+
 uniform cameraBlock {
+   	mat4 ViewMatrix;
+	mat4 ProjMatrix;
 	mat4 ViewProjMatrix;
 	vec3 ViewPos;
 };
 
 out vec4 outColor;
+
+// Import common functions
+vec3 simpleToneMap(vec3 c, float exp);
+vec3 unchartedTonemap(vec3 c, float exp);
+vec3 toInverseGamma(vec3 c, float gamma);
 
 void main(void) {
 	vec3 N = normalize(vsIn.normal);
@@ -31,7 +43,9 @@ void main(void) {
 		spec = vec3(1, 1, 1) * pow(NdotH, 15.0);
 	}
 
-	outColor = vec4(diff + spec, 1.0);
+	vec3 retColor = diff + spec;
+	retColor = unchartedTonemap(retColor, exposure);
+	retColor = toInverseGamma(retColor, gamma);
 
-	//outColor = vec4(0.5, 0.5, 0.1, 1.0);
+	outColor = vec4(retColor, 1.0);
 }

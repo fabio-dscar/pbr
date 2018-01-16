@@ -14,7 +14,7 @@ OpenGLApplication::OpenGLApplication(const std::string& title, int width, int he
 void OpenGLApplication::init(int argc, char* argv[]) {
     // Setup glut
     glutInit(&argc, argv);
-    glutInitContextVersion(4, 0);
+    glutInitContextVersion(4, 1);
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -55,6 +55,8 @@ void OpenGLApplication::init(int argc, char* argv[]) {
     glDisable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    glEnable(GL_MULTISAMPLE);
 
     prepare();
 }

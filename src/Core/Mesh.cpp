@@ -3,12 +3,13 @@
 #include <Geometry.h>
 #include <RenderInterface.h>
 #include <Resources.h>
+#include <Material.h>
 
 using namespace pbr;
 
 Mesh::Mesh(const std::string& objPath) {
     _geometry = make_sref<Geometry>();
-
+    
     // Load Obj file
     ObjFile objFile;
     loadObj(objPath, objFile);
@@ -38,10 +39,16 @@ void Mesh::prepare() {
 void Mesh::draw() {
     updateMatrix();
 
-    RHI.useProgram(_prog);
+    if (_prog == -1)
+        _material->use();
+    else
+        RHI.useProgram(_prog);
 
     RHI.setMatrix4("ModelMatrix",  objToWorld());
     RHI.setMatrix3("NormalMatrix", normalMatrix());
+
+    if (_material)
+        _material->uploadData();
 
     RHI.drawGeometry(_geometry->rrid());
 
