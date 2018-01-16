@@ -87,8 +87,8 @@ vec3 perturbNormal(in sampler2D normalMap) {
 	vec3 dpdy = dFdy(vsIn.position);
 
 	// Find tangent from derivates and build the TBN basis
-    vec3 N = normalize(vsIn.normal);
-    vec3 T = normalize(dpdx * duvdy.t - dpdy * duvdx.t);
+    vec3 N =  normalize(vsIn.normal);
+    vec3 T =  normalize(dpdx * duvdy.t - dpdy * duvdx.t);
     vec3 B = -normalize(cross(N, T));
 
     return normalize(mat3(T, B, N) * normal);
@@ -101,6 +101,8 @@ void main(void) {
 	vec3 N = perturbNormal(normalTex);
     vec3 R = reflect(-V, N); 
 
+	float NdotV = max(dot(N, V), 0.0);
+
 	float rough = texture(roughTex, vsIn.texCoords).r;
 	float metal = texture(metallicTex, vsIn.texCoords).r;
 
@@ -111,11 +113,11 @@ void main(void) {
 
 	// Specular component
 	vec3 F0 = mix(spec, kd, metal);
-	vec3 F  = fresnelSchlickUnreal(max(dot(N, V), 0.0), spec);
+	vec3 F  = fresnelSchlickUnreal(NdotV, spec);
 	
 	// Fetch precomputed integrals
     vec3 prefGGX = textureLod(ggxTex, R, rough * MAX_GGX_LOD).rgb;  
-    vec3 brdf    = texture(brdfTex, vec2(max(dot(N, V), 0.0), rough)).rgb;
+    vec3 brdf    = texture(brdfTex, vec2(NdotV, rough)).rgb;
 
 	vec3 brdfInt  = F0 * brdf.r + brdf.g; // Appendix, formula Y
     vec3 specular = prefGGX * brdfInt;    // Appendix, formula Z

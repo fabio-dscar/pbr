@@ -32,12 +32,17 @@ vec3 unchartedTonemap(vec3 c, float exp) {
 	float W = 11.2;
 
 	c = exp * c;
-	return ((c * (A * c + C * B) + D * E) / (c * (A * c + B) + D * F)) - E/F;
+	return ((c * (A * c + C * B) + D * E) / (c * (A * c + B) + D * F)) - E / F;
+}
+
+vec3 unchartedTonemap(vec3 v, float A, float B, float C, float D, float E, float J) {
+	return ((v * (A * v + C * B) + D * E) / (v * (A * v + B) + D * J)) - E / J;
 }
 
 vec3 unchartedTonemapParam(vec3 c, float exp, float A, float B, float C, float D, float E, float J, float W) {
-	c = exp * c;
-	return ((c * (A * c + C * B) + D * E) / (c * (A * c + B) + D * J)) - E/J;
+	vec3 scale = unchartedTonemap(vec3(W), A, B, C, D, E, J);
+	vec3 ret   = unchartedTonemap(exp * c, A, B, C, D, E, J);
+	return ret / scale;
 }
 
 // Convert to Y component of XYZ color space

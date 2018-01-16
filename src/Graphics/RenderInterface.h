@@ -171,7 +171,7 @@ namespace pbr {
         vec<RHIBuffer>    _buffers;
         vec<RHIProgram>   _programs;
         vec<RHITexture>   _textures;
-    };
+    };  
 
 }
 

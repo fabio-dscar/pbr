@@ -22,7 +22,7 @@ namespace pbr {
 
         void setDiffuse(RRID diffTex);
         void setNormal(RRID normalTex);
-        void setSpecular(const Vec3& spec);
+        void setSpecular(const Color& spec);
 
         void setMetallic(RRID metalTex);
         void setMetallic(float metallic);
@@ -34,11 +34,20 @@ namespace pbr {
         void setBrdfTex(RRID id);
         void setGGXTex(RRID id);
 
+        float metallic()  const;
+        float roughness() const;
+        Color specular()  const;
+        Color diffuse()   const;
+
+        RRID diffuseTex()  const;
+        RRID metallicTex() const;
+        RRID roughTex()    const;
+
     private:
-        RGBSpectrum _diffuse;
+        Color _diffuse;
         float _metallic;
         float _roughness;
-        Vec3  _f0;
+        Color _f0;
 
         RRID _diffuseTex;
         RRID _normalTex;

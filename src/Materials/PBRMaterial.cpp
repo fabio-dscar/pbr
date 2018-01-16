@@ -21,7 +21,7 @@ void PBRMaterial::uploadData() const {
     
     RHI.setFloat("metallic", _metallic);
     RHI.setFloat("roughness", _roughness);
-    RHI.setVector3("spec", _f0);
+    RHI.setVector3("spec", Vec3(_f0.r, _f0.g, _f0.b));
 
     // Set diffuse texture
     RHI.bindTexture(1, _diffuseTex);
@@ -72,7 +72,7 @@ void PBRMaterial::setNormal(RRID normalTex) {
     _normalTex = normalTex;
 }
 
-void PBRMaterial::setSpecular(const Vec3& spec) {
+void PBRMaterial::setSpecular(const Color& spec) {
     _f0 = spec;
 }
 
@@ -90,4 +90,32 @@ void PBRMaterial::setRoughness(RRID roughTex) {
 
 void PBRMaterial::setRoughness(float roughness) {
     _roughness = roughness;
+}
+
+float PBRMaterial::metallic() const {
+    return _metallic;
+}
+
+float PBRMaterial::roughness() const {
+    return _roughness;
+}
+
+Color PBRMaterial::specular() const {
+    return _f0;
+}
+
+Color PBRMaterial::diffuse() const {
+    return _diffuse;
+}
+
+RRID PBRMaterial::diffuseTex() const {
+    return _diffuseTex;
+}
+
+RRID PBRMaterial::metallicTex() const {
+    return _metallicTex;
+}
+
+RRID PBRMaterial::roughTex() const {
+    return _roughTex;
 }

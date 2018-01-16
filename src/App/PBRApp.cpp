@@ -90,7 +90,7 @@ void PBRApp::prepare() {
     //mat->setMetallic(1.0f);
     //mat->setRoughness(0.2f);
     mat->setRoughness(roughId);
-    mat->setSpecular(Vec3(0.04f, 0.04f, 0.04f));
+    mat->setSpecular(Color(0.04f, 0.04f, 0.04f));
     //mat->setSpecular(Vec3(1.0f, 0.71f, 0.29f));
     mesh->setMaterial(mat);
 
@@ -170,6 +170,9 @@ void PBRApp::processKeyPress(unsigned char key, int x, int y)  {
 
     if (key == 'h')
         _showGUI = !_showGUI;
+
+    if (key == 'p')
+        takeSnapshot();
 }
 
 void PBRApp::processMouseClick(int button, int state, int x, int y) {
@@ -196,6 +199,15 @@ void PBRApp::processMouseClick(int button, int state, int x, int y) {
         Ray ray = Ray(_camera->position(), rayWorld);
         
         if (_scene.intersect(ray, &_selectedShape)) {
+            PBRMaterial* pbrMat = (PBRMaterial*)_selectedShape->material().get();
+
+            _selMat = pbrMat;
+            
+            _diffuse   = pbrMat->diffuse();
+            _metallic  = pbrMat->metallic();
+            _roughness = pbrMat->roughness();
+            _f0 = pbrMat->specular();
+
             std::cout << "Intersection found." << std::endl;
         }
 
@@ -218,7 +230,7 @@ void PBRApp::drawInterface() {
     ImGui::TextWrapped("Uncharted tone function parameters. They control the shape of the tone curve. For more information check the report.");
 
     ImGui::SliderFloat("gamma", &_gamma, 0.0f, 4.0f);
-    ImGui::SliderFloat("exposure", &_exposure, 0.0f, 5.0f);
+    ImGui::SliderFloat("exposure", &_exposure, 0.0f, 8.0f);
  
     ImGui::Separator();
 
@@ -226,9 +238,19 @@ void PBRApp::drawInterface() {
     ImGui::SliderFloat("B", &_toneParams[1], 0.0f, 2.0f);
     ImGui::SliderFloat("C", &_toneParams[2], 0.0f, 2.0f);
     ImGui::SliderFloat("D", &_toneParams[3], 0.0f, 2.0f);
-    ImGui::SliderFloat("E", &_toneParams[4], 0.0f, 2.0f);
+    ImGui::SliderFloat("E", &_toneParams[4], 0.0f, 0.2f);
     ImGui::SliderFloat("J", &_toneParams[5], 0.0f, 2.0f);
-    ImGui::SliderFloat("W", &_toneParams[6], 0.0f, 20.0f);
+    ImGui::SliderFloat("W", &_toneParams[6], 0.0f, 30.0f);
+
+    ImGui::Separator();
+
+    ImGui::PlotLines("Tone map function", 
+    [](void* data, int idx) { 
+        float* p = (float*)data;
+        float v  = 0.03f * (float)idx;
+        float scale = ((p[6] * (p[0] * p[6] + p[2] * p[1]) + p[3] * p[4]) / (p[6] * (p[0] * p[6] + p[1]) + p[3] * p[5])) - p[4] / p[5];
+        return (((v * (p[0] * v + p[2] * p[1]) + p[3] * p[4]) / (v * (p[0] * v + p[1]) + p[3] * p[5])) - p[4] / p[5]) / scale;
+    }, _toneParams, 100, 0, NULL, FLOAT_MAXIMUM, FLOAT_MAXIMUM, ImVec2(320, 120));
 
     if (ImGui::Button("Restore defaults"))
         restoreToneDefaults();
@@ -239,20 +261,37 @@ void PBRApp::drawInterface() {
     if (_selectedShape != nullptr) {
         ImGui::Begin("Selected Object");
 
-        static float m = 0.5f;
-        static float a = 0.5f;
+        if (_selMat->diffuseTex() < 0)
+            ImGui::ColorEdit3("Diffuse", (float*)&_diffuse);
 
-        ImGui::SliderFloat("Metallic", &m, 0.0f, 1.0f);
+        ImGui::ColorEdit3("Specular", (float*)&_f0);
 
-        float arr[3];
-        ImGui::ColorEdit3("Diffuse", &arr[0]);
+        if (_selMat->metallicTex() < 0)
+            ImGui::SliderFloat("Metallic", &_metallic, 0.0f, 1.0f);
 
+        if (_selMat->roughTex() < 0)
+            ImGui::SliderFloat("Metallic", &_roughness, 0.0f, 1.0f);
+        
         ImGui::End();
     }
+
+    // Information window
+    ImGui::Begin("Information");
+
+    ImGui::TextWrapped("Press right click and move the mouse to orient the camera. WASD for movement.");
+    ImGui::TextWrapped("Press 'H' to toggle GUI visibility.");
+    ImGui::TextWrapped("Press 'P' to take a snapshot! Do not forget to hide the GUI by pressing 'H' first, if desired.");
+    ImGui::TextWrapped("By clicking the middle mouse button, it is possible to pick objects and change some of their parameters.");
+
+    ImGui::End();
 
     ImGui::Render();
 }
 
 void PBRApp::changeSkybox(int id) {
     _scene.setEnvironment(_skyboxes[id]);
+}
+
+void PBRApp::takeSnapshot() {
+
 }

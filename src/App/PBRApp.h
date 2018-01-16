@@ -6,8 +6,11 @@
 #include <Scene.h>
 #include <Renderer.h>
 #include <Skybox.h>
+#include <Spectrum.h>
 
 namespace pbr {
+
+    class PBRMaterial;
 
     class PBRApp : public OpenGLApplication {
     public:
@@ -20,10 +23,12 @@ namespace pbr {
 
         void processKeyPress(unsigned char key, int x, int y) override;
         void processMouseClick(int button, int state, int x, int y) override;
+
     private:
         void drawInterface();
         void restoreToneDefaults();
         void changeSkybox(int id);
+        void takeSnapshot();
 
         Scene    _scene;
         Renderer _renderer;
@@ -36,6 +41,12 @@ namespace pbr {
         float _gamma;
         float _exposure;
         float _toneParams[7];
+
+        PBRMaterial* _selMat;
+        float _metallic;
+        float _roughness;
+        Color _f0;
+        Color _diffuse;
 
         bool _showGUI;
         bool _skyToggle;
