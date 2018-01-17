@@ -72,28 +72,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(SolutionDir)..\ext\pugixml;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(SolutionDir)..\ext\pugixml;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(SolutionDir)..\ext\pugixml;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>intermediate\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\src;$(SolutionDir)..\src\Math;$(SolutionDir)..\src\Lights;$(SolutionDir)..\src\Core;$(SolutionDir)..\src\Materials;$(SolutionDir)..\src\Utils;$(SolutionDir)..\src\Graphics;$(SolutionDir)..\ext\filesystem;$(SolutionDir)..\ext\lodepng;$(SolutionDir)..\ext\zlib\include;$(SolutionDir)..\ext\glew\include;$(SolutionDir)..\ext\freeglut\include;$(SolutionDir)..\src\App;$(SolutionDir)..\ext\tinyobj;$(SolutionDir)..\ext\imgui;$(SolutionDir)..\src\GUI;$(SolutionDir)..\ext\pugixml;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)..\ext\lodenpng;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)..\ext\zlib\lib\$(Configuration)\x64;$(LibraryPath);$(SolutionDir)..\ext\freeglut\lib\$(Platform);$(SolutionDir)..\ext\glew\lib\Release\$(Platform)</LibraryPath>
   </PropertyGroup>
@@ -173,6 +173,7 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClCompile Include="..\..\ext\imgui\imgui.cpp" />
     <ClCompile Include="..\..\ext\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\ext\lodepng\lodepng.cpp" />
+    <ClCompile Include="..\..\ext\pugixml\pugixml.cpp" />
     <ClCompile Include="..\..\src\App\OpenGLApplication.cpp" />
     <ClCompile Include="..\..\src\App\PBRApp.cpp" />
     <ClCompile Include="..\..\src\Core\Camera.cpp" />
@@ -210,6 +211,8 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClCompile Include="..\..\src\Math\Vector3.cpp" />
     <ClCompile Include="..\..\src\Math\Vector4.cpp" />
     <ClCompile Include="..\..\src\Utils\Image.cpp" />
+    <ClCompile Include="..\..\src\Utils\LoadXML.cpp" />
+    <ClCompile Include="..\..\src\Utils\ParameterMap.cpp" />
     <ClCompile Include="..\..\src\Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +260,8 @@ XCOPY  "$(SolutionDir)..\data\Shaders" "$(SolutionDir)..\bin\$(Configuration)\$(
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\Utils\Image.h" />
+    <ClInclude Include="..\..\src\Utils\LoadXML.h" />
+    <ClInclude Include="..\..\src\Utils\ParameterMap.h" />
     <ClInclude Include="..\..\src\Utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

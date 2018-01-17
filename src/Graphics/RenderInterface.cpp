@@ -313,12 +313,12 @@ void RenderInterface::initialize() {
     // Load BRDF precomputation
     TexSampler brdfSampler;
     Image brdf;
-    brdf.loadImage("brdf.img");
+    brdf.loadImage("PBR/brdf.img");
     RRID brdfId = createTexture(brdf, brdfSampler);
     Resource.addTexture("brdf", RHI.getTexture(brdfId));
     
     // Load cubemap
-    TexSampler cubeSampler;
+    /*TexSampler cubeSampler;
     cubeSampler.setFilterMode(FILTER_LINEAR, FILTER_LINEAR);
     cubeSampler.setWrapMode(WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE);
     
@@ -339,7 +339,7 @@ void RenderInterface::initialize() {
     Cubemap ggxCube;
     ggxCube.loadCubemap("ggx.cube");
     RRID ggxCubeId = createCubemap(ggxCube, ggxSampler);
-    Resource.addTexture("ggx", RHI.getTexture(ggxCubeId));
+    Resource.addTexture("ggx", RHI.getTexture(ggxCubeId));*/
     
     // Load standard engine shaders
     ShaderSource fsCommon(FRAGMENT_SHADER, "common.fs");
@@ -438,7 +438,7 @@ void RenderInterface::initialize() {
     glActiveTexture(GL_TEXTURE2);
     RHI.bindTexture(id2);
     
-    glActiveTexture(GL_TEXTURE5);
+    /*glActiveTexture(GL_TEXTURE5);
     RHI.bindTexture(cubeId);
 
     // Set PBR cubemaps
@@ -446,7 +446,7 @@ void RenderInterface::initialize() {
     RHI.bindTexture(irrCubeId);
 
     glActiveTexture(GL_TEXTURE7);
-    RHI.bindTexture(ggxCubeId);
+    RHI.bindTexture(ggxCubeId);*/
 
     // Set BRDF precomputation
     glActiveTexture(GL_TEXTURE8);

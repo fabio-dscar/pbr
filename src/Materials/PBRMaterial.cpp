@@ -7,8 +7,14 @@ PBRMaterial::PBRMaterial() : _metallic(1.0f), _roughness(0.0f), _f0(0.04f) {
 
     _brdfTex = Resource.getTexture("brdf")->rrid();
 
+    _diffuseTex  = -1;
+    _normalTex   = -1;
     _metallicTex = -1;
     _roughTex    = -1;
+
+    _diffuse   = Color(-1);
+    _metallic  = -1;
+    _roughness = -1;
 }
 
 void PBRMaterial::update(const Skybox& skybox) {
@@ -22,13 +28,18 @@ void PBRMaterial::uploadData() const {
     RHI.setFloat("metallic", _metallic);
     RHI.setFloat("roughness", _roughness);
     RHI.setVector3("spec", Vec3(_f0.r, _f0.g, _f0.b));
+    RHI.setVector3("diffuse", Vec3(_diffuse.r, _diffuse.g, _diffuse.b));
 
     // Set diffuse texture
-    RHI.bindTexture(1, _diffuseTex);
-    RHI.setSampler("diffuseTex", 1);
+    if (_diffuseTex != -1) {
+        RHI.bindTexture(1, _diffuseTex);
+        RHI.setSampler("diffuseTex", 1);
+    }
 
-    RHI.bindTexture(2, _normalTex);
-    RHI.setSampler("normalTex", 2);
+    if (_normalTex != -1) {
+        RHI.bindTexture(2, _normalTex);
+        RHI.setSampler("normalTex", 2);
+    }
 
     if (_metallicTex != -1) {
         RHI.bindTexture(3, _metallicTex);
@@ -66,6 +77,10 @@ void PBRMaterial::setGGXTex(RRID id) {
 
 void PBRMaterial::setDiffuse(RRID diffTex) {
     _diffuseTex = diffTex;
+}
+
+void PBRMaterial::setDiffuse(const Color& diffuse) {
+    _diffuse = diffuse;
 }
 
 void PBRMaterial::setNormal(RRID normalTex) {

@@ -50,6 +50,8 @@ uniform sampler2D diffuseTex;
 uniform sampler2D normalTex;
 uniform sampler2D metallicTex;
 uniform sampler2D roughTex;
+
+uniform vec3  diffuse;
 uniform float metallic;
 uniform float roughness;
 uniform vec3  spec;
@@ -96,6 +98,21 @@ vec3 perturbNormal(in sampler2D normalMap) {
 
 const float MAX_GGX_LOD = 4.0;
 
+
+float fetchParameter(sampler2D samp, float val) {
+	if (val >= 0.0)
+		return val;
+	else
+		return texture(samp, vsIn.texCoords).r;
+}
+
+vec3 fetchDiffuse() {
+	if (diffuse.r >= 0)
+		return diffuse;
+	else
+		return toLinearRGB(texture(diffuseTex, vsIn.texCoords).rgb, gamma);
+}
+
 void main(void) {
     vec3 V = normalize(ViewPos - vsIn.position);
 	vec3 N = perturbNormal(normalTex);
@@ -103,11 +120,11 @@ void main(void) {
 
 	float NdotV = max(dot(N, V), 0.0);
 
-	float rough = texture(roughTex, vsIn.texCoords).r;
-	float metal = texture(metallicTex, vsIn.texCoords).r;
+	float rough = fetchParameter(roughTex, roughness);
+	float metal = fetchParameter(metallicTex, metallic);
 
 	// Diffuse component
-	vec3 kd         = toLinearRGB(texture(diffuseTex, vsIn.texCoords).rgb, gamma);
+	vec3 kd         = fetchDiffuse();
 	vec3 irradiance = texture(irradianceTex, N).rgb;
     vec3 diffuse    = kd * irradiance; // Appendix, formula X
 

@@ -21,6 +21,8 @@ namespace pbr {
         void uploadData() const;
 
         void setDiffuse(RRID diffTex);
+        void setDiffuse(const Color& diffuse);
+
         void setNormal(RRID normalTex);
         void setSpecular(const Color& spec);
 

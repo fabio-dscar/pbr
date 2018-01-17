@@ -189,6 +189,15 @@
     <ClCompile Include="..\..\ext\imgui\imgui_draw.cpp">
       <Filter>External</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Utils\ParameterMap.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\LoadXML.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\pugixml\pugixml.cpp">
+      <Filter>External</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\PBR.h">
@@ -325,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="..\..\ext\imgui\stb_truetype.h">
       <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\ParameterMap.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\LoadXML.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -140,14 +140,14 @@ bool math::overlaps(const BBox3& box1, const BBox3& box2) {
 BBox3 math::transform(const Matrix4x4& mat, const BBox3& box) {
     BBox3 ret(FLOAT_INFINITY, -FLOAT_INFINITY);
 
-    ret.expand(mat * Vec3(box[0].x, box[0].y, box[0].z));
-    ret.expand(mat * Vec3(box[1].x, box[0].y, box[0].z));
-    ret.expand(mat * Vec3(box[0].x, box[1].y, box[0].z));
-    ret.expand(mat * Vec3(box[0].x, box[0].y, box[1].z));
-    ret.expand(mat * Vec3(box[0].x, box[1].y, box[1].z));
-    ret.expand(mat * Vec3(box[1].x, box[1].y, box[0].z));
-    ret.expand(mat * Vec3(box[1].x, box[0].y, box[1].z));
-    ret.expand(mat * Vec3(box[1].x, box[1].y, box[1].z));
+    ret.expand(mat * Vec4(box[0].x, box[0].y, box[0].z, 1.0f));
+    ret.expand(mat * Vec4(box[1].x, box[0].y, box[0].z, 1.0f));
+    ret.expand(mat * Vec4(box[0].x, box[1].y, box[0].z, 1.0f));
+    ret.expand(mat * Vec4(box[0].x, box[0].y, box[1].z, 1.0f));
+    ret.expand(mat * Vec4(box[0].x, box[1].y, box[1].z, 1.0f));
+    ret.expand(mat * Vec4(box[1].x, box[1].y, box[0].z, 1.0f));
+    ret.expand(mat * Vec4(box[1].x, box[0].y, box[1].z, 1.0f));
+    ret.expand(mat * Vec4(box[1].x, box[1].y, box[1].z, 1.0f));
 
     return ret;
 }

@@ -18,6 +18,8 @@
 
 #include <GUI.h>
 
+#include <Utils.h>
+
 using namespace pbr;
 
 void initializeEngine() {
@@ -29,7 +31,7 @@ void initializeEngine() {
 }
 
 PBRApp::PBRApp(const std::string& title, int width, int height) : OpenGLApplication(title, width, height), 
-                         _skyToggle(true), _selectedShape(nullptr), _showGUI(true), _skybox(1) {
+                         _skyToggle(true), _selectedShape(nullptr), _showGUI(true), _skybox(1), _f0(0.04f) {
 
 }
 
@@ -47,7 +49,7 @@ void PBRApp::prepare() {
     // Load cubemaps
     vec<std::string> folders = { "Pinetree", "Ruins", "WalkOfFame", "WinterForest" };
     for (const std::string& str : folders)
-        _skyboxes.emplace_back(str);
+        _skyboxes.emplace_back("PBR/" + str);
 
     for (Skybox& sky : _skyboxes)
         sky.initialize();
@@ -57,56 +59,39 @@ void PBRApp::prepare() {
                                      Vec3(0, 0, 0), Vec3(0, 1, 0), 0.1f, 500.0f, 60.0f);
     _scene.addCamera(_camera);
 
-    // Add shapes
-    sref<Shape> mesh = make_sref<Mesh>("gun.obj");
-    mesh->prepare();
-    mesh->_prog = -1; //Resource.getShader("lighting")->id();
-    //mesh->setScale(0.75, 0.75, 0.75);
-    mesh->setScale(5.5f, 5.5f, 5.5f);
-    mesh->updateMatrix();
-    _scene.addShape(mesh);
-    
-    Image diffTex;
-    TexSampler texSampler;
-    diffTex.loadImage("albedo.png");
-    RRID diffId = RHI.createTexture(diffTex, texSampler);
+    // Load meshes
+    sref<Shape> obj = Utils::loadSceneObject("sphere");
+    obj->setPosition(Vec3(-20.0f, 0.0f, 0.0f));
+    obj->_prog = -1;
+    obj->updateMatrix();
+    _scene.addShape(obj);
 
-    Image normalTex;
-    normalTex.loadImage("normals.png");
-    RRID normalId = RHI.createTexture(normalTex, texSampler);
+    sref<Shape> gun = Utils::loadSceneObject("gun");
+    gun->setScale(5.5f, 5.5f, 5.5f);
+    gun->updateMatrix();
+    gun->_prog = -1;
+    _scene.addShape(gun);
 
-    Image metallicTex;
-    metallicTex.loadImage("metallic.png");
-    RRID metalId = RHI.createTexture(metallicTex, texSampler);
+    sref<Shape> prev = Utils::loadSceneObject("preview");
+    prev->setScale(1.0f, 1.0f, 1.0f);
+    prev->setPosition(Vec3(20.0f, 0.0f, 0.0f));
+    prev->updateMatrix();
+    prev->_prog = -1;
+    _scene.addShape(prev);
 
-    Image roughTex;
-    roughTex.loadImage("roughness.png");
-    RRID roughId = RHI.createTexture(roughTex, texSampler);
+    sref<Shape> spec = Utils::loadSceneObject("specular");
+    spec->setScale(1.0f, 1.0f, 1.0f);
+    spec->setPosition(Vec3(-10.0f, 0.0f, 0.0f));
+    spec->updateMatrix();
+    spec->_prog = -1;
+    _scene.addShape(spec);
 
-    sref<PBRMaterial> mat = make_sref<PBRMaterial>();
-    mat->setDiffuse(diffId);
-    mat->setNormal(normalId);
-    mat->setMetallic(metalId);
-    //mat->setMetallic(1.0f);
-    //mat->setRoughness(0.2f);
-    mat->setRoughness(roughId);
-    mat->setSpecular(Color(0.04f, 0.04f, 0.04f));
-    //mat->setSpecular(Vec3(1.0f, 0.71f, 0.29f));
-    mesh->setMaterial(mat);
-
-    sref<Shape> quad = make_sref<Mesh>("quad.obj");
-    quad->prepare();
-    quad->_prog = Resource.getShader("lightingTex")->id();
-    quad->setPosition(Vec3(0, -3.0f, 0));
-    quad->setScale(50, 1, 50);
-    quad->updateMatrix();
-    //_scene.addShape(quad);
-
-    /*RRID skyShader = Resource.getShader("skybox")->id();
-    RRID skyTex    = Resource.getTexture("sky")->rrid();
-    sref<Skybox> skybox = make_sref<Skybox>(skyShader, skyTex);
-    skybox->initialize();
-    _scene.setEnvironment(*skybox);*/
+    /*sref<Shape> bunny = Utils::loadSceneObject("bust");
+    bunny->setScale(1.0f, 1.0f, 1.0f);
+    bunny->setPosition(Vec3(10.0f, 0.0f, 0.0f));
+    bunny->updateMatrix();
+    bunny->_prog = -1;*/
+    //_scene.addShape(bunny);
 
     changeSkybox(_skybox);
 }
@@ -243,7 +228,7 @@ void PBRApp::drawInterface() {
     ImGui::SliderFloat("W", &_toneParams[6], 0.0f, 30.0f);
 
     ImGui::Separator();
-
+    
     ImGui::PlotLines("Tone map function", 
     [](void* data, int idx) { 
         float* p = (float*)data;
@@ -262,15 +247,19 @@ void PBRApp::drawInterface() {
         ImGui::Begin("Selected Object");
 
         if (_selMat->diffuseTex() < 0)
-            ImGui::ColorEdit3("Diffuse", (float*)&_diffuse);
+            if (ImGui::ColorEdit3("Diffuse", (float*)&_diffuse))
+                _selMat->setDiffuse(_diffuse);
 
-        ImGui::ColorEdit3("Specular", (float*)&_f0);
+        if (ImGui::ColorEdit3("Specular", (float*)&_f0))
+            _selMat->setSpecular(_f0);
 
         if (_selMat->metallicTex() < 0)
-            ImGui::SliderFloat("Metallic", &_metallic, 0.0f, 1.0f);
+            if (ImGui::SliderFloat("Metallic", &_metallic, 0.0f, 1.0f))
+                _selMat->setMetallic(_metallic);
 
         if (_selMat->roughTex() < 0)
-            ImGui::SliderFloat("Metallic", &_roughness, 0.0f, 1.0f);
+            if (ImGui::SliderFloat("Roughness", &_roughness, 0.0f, 1.0f))
+                _selMat->setRoughness(_roughness);
         
         ImGui::End();
     }

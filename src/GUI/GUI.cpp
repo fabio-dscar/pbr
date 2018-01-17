@@ -282,16 +282,23 @@ void imgui_easy_theming(ImVec3 color_for_text, ImVec3 color_for_head, ImVec3 col
     style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(color_for_head.x, color_for_head.y, color_for_head.z, 1.00f);
     style.Colors[ImGuiCol_PlotHistogram] = ImVec4(color_for_text.x, color_for_text.y, color_for_text.z, 0.63f);
     style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(color_for_head.x, color_for_head.y, color_for_head.z, 1.00f);
-    style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(color_for_head.x, color_for_head.y, color_for_head.z, 0.43f);
+    style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(color_for_head.x, color_for_head.y, color_for_head.z, 0.63f);
     style.Colors[ImGuiCol_PopupBg] = ImVec4(color_for_pops.x, color_for_pops.y, color_for_pops.z, 0.92f);
     style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(color_for_area.x, color_for_area.y, color_for_area.z, 0.73f);
 }
 
 void SetupImGuiStyle2() {
-    static ImVec3 color_for_text = ImVec3(236.f / 255.f, 240.f / 255.f, 241.f / 255.f);
+    /*static ImVec3 color_for_text = ImVec3(236.f / 255.f, 240.f / 255.f, 241.f / 255.f);
     static ImVec3 color_for_head = ImVec3(41.f / 255.f, 128.f / 255.f, 185.f / 255.f);
     static ImVec3 color_for_area = ImVec3(57.f / 255.f, 79.f / 255.f, 105.f / 255.f);
     static ImVec3 color_for_body = ImVec3(44.f / 255.f, 62.f / 255.f, 80.f / 255.f);
+    static ImVec3 color_for_pops = ImVec3(33.f / 255.f, 46.f / 255.f, 60.f / 255.f);*/
+
+    static ImVec3 color_for_text = ImVec3(236.f / 255.f, 240.f / 255.f, 241.f / 255.f);
+    static ImVec3 color_for_head = ImVec3(110.f / 255.f, 110.f / 255.f, 110.f / 255.f);
+    static ImVec3 color_for_area = ImVec3(60.f / 255.f, 60.f / 255.f, 60.f / 255.f);
+    static ImVec3 color_for_body = ImVec3(48.f / 255.f, 48.f / 255.f, 48.f / 255.f);
     static ImVec3 color_for_pops = ImVec3(33.f / 255.f, 46.f / 255.f, 60.f / 255.f);
+    static ImVec3 color_for_slider_button = ImVec3(255.f / 255.f, 144.f / 255.f, 37.f / 255.f);
     imgui_easy_theming(color_for_text, color_for_head, color_for_area, color_for_body, color_for_pops);
 }

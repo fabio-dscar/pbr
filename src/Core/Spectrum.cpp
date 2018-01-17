@@ -1,7 +1,6 @@
 #include <Spectrum.h>
 
 #include <PBR.h>
-#include <PBRMath.h>
 
 using namespace pbr;
 
@@ -10,6 +9,7 @@ const RGBSpectrum RGBSpectrum::BLACK = RGBSpectrum(0);
 RGBSpectrum::RGBSpectrum() : r(0), g(0), b(0) { }
 RGBSpectrum::RGBSpectrum(float r, float g, float b) : r(r), g(g), b(b) { }
 RGBSpectrum::RGBSpectrum(float s) : r(s), g(s), b(s) { }
+RGBSpectrum::RGBSpectrum(const Vec3& v) : r(v.x), g(v.y), b(v.z) { }
 
 RGBSpectrum  RGBSpectrum::operator+ (const RGBSpectrum& rgb) const {
     return RGBSpectrum(r + rgb.r, g + rgb.g, b + rgb.b);

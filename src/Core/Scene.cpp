@@ -14,7 +14,8 @@ bool Scene::intersect(const Ray& ray, Shape** obj) {
     info.obj  = nullptr;
     
     for (sref<Shape> shape : _shapes) {
-        if (shape->bbox().intersectRay(ray, &t)) {
+        BBox3 bbox = shape->bbox();
+        if (bbox.intersectRay(ray, &t)) {
             if (t < info.dist) {
                 info.dist = t;
                 info.obj  = shape.get();

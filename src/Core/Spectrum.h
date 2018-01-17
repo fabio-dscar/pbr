@@ -2,6 +2,9 @@
 #define __PBR_SPECTRUM_H__
 
 #include <PBR.h>
+#include <PBRMath.h>
+
+using namespace pbr::math;
 
 namespace pbr {
 
@@ -14,6 +17,7 @@ namespace pbr {
         RGBSpectrum();
         RGBSpectrum(float r, float g, float b);
         explicit RGBSpectrum(float s);
+        explicit RGBSpectrum(const Vec3& v);
 
         RGBSpectrum  operator+ (const RGBSpectrum& rgb) const;
         RGBSpectrum& operator+=(const RGBSpectrum& rgb);
