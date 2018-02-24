@@ -36,6 +36,9 @@ PBRApp::PBRApp(const std::string& title, int width, int height) : OpenGLApplicat
 }
 
 void PBRApp::prepare() {
+    std::cout << std::endl;
+    std::cout << "[INFO] Initializing renderer..." << std::endl;
+
     initializeEngine();
 
     ImGui_Init(_width, _height);
@@ -47,6 +50,8 @@ void PBRApp::prepare() {
     memcpy(_toneParams, _renderer.toneParams(), sizeof(float) * 7);
 
     // Load cubemaps
+    std::cout << "[INFO] Loading cubemaps..." << std::endl;
+
     vec<std::string> folders = { "Pinetree", "Ruins", "WalkOfFame", "WinterForest" };
     for (const std::string& str : folders)
         _skyboxes.emplace_back("PBR/" + str);
@@ -60,6 +65,8 @@ void PBRApp::prepare() {
     _scene.addCamera(_camera);
 
     // Load meshes
+    std::cout << "[INFO] Loading meshes and materials..." << std::endl;
+
     sref<Shape> obj = Utils::loadSceneObject("sphere");
     obj->setPosition(Vec3(-20.0f, 0.0f, 0.0f));
     obj->_prog = -1;
@@ -86,14 +93,16 @@ void PBRApp::prepare() {
     spec->_prog = -1;
     _scene.addShape(spec);
 
-    /*sref<Shape> bunny = Utils::loadSceneObject("bust");
-    bunny->setScale(1.0f, 1.0f, 1.0f);
-    bunny->setPosition(Vec3(10.0f, 0.0f, 0.0f));
-    bunny->updateMatrix();
-    bunny->_prog = -1;*/
-    //_scene.addShape(bunny);
+    sref<Shape> rough = Utils::loadSceneObject("rough");
+    rough->setScale(1.0f, 1.0f, 1.0f);
+    rough->setPosition(Vec3(10.0f, 0.0f, 0.0f));
+    rough->updateMatrix();
+    rough->_prog = -1;
+    _scene.addShape(rough);
 
     changeSkybox(_skybox);
+
+    std::cout << "[INFO] Assets finished loading..." << std::endl;
 }
 
 void PBRApp::drawScene() {
@@ -135,7 +144,7 @@ void PBRApp::update(float dt) {
     }
 
     if (moveDir != Vector3(0)) {
-        _camera->setPosition(_camera->position() + normalize(moveDir) * dt * 6.0f);
+        _camera->setPosition(_camera->position() + normalize(moveDir) * dt * 7.0f);
         _camera->updateViewMatrix();
     }
 

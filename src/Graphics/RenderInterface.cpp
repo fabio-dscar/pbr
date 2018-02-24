@@ -269,43 +269,6 @@ RenderInterface& RenderInterface::get() {
     return _inst;
 }
 
-/*GLuint createTexture(const Image& img, const TexSampler& sampler) {
-    GLuint id = 0;
-    GLenum target = OGLTexTargets[img.type()];
-
-    glGenTextures(1, &id);
-    glBindTexture(target, id);
-
-    GLenum pType = OGLTexPixelTypes[img.compType()];
-    GLenum oglFmt = OGLTexPixelFormats[img.format()];
-
-    // Upload all levels
-    ImageType type = img.type();
-    for (uint32 lvl = 0; lvl < img.numLevels(); ++lvl) {
-        uint32 w = mipDimension(img.width(), lvl);
-        uint32 h = mipDimension(img.height(), lvl);
-        uint32 d = mipDimension(img.depth(), lvl);
-
-        if (type == IMGTYPE_2D)
-            glTexImage2D(target, lvl, oglFmt, w, h, 0, oglFmt, pType, img.data(lvl));
-        else if (type == IMGTYPE_1D)
-            glTexImage1D(target, lvl, oglFmt, w, 0, oglFmt, pType, img.data(lvl));
-        else if (type == IMGTYPE_3D)
-            glTexImage3D(target, lvl, oglFmt, w, h, d, 0, oglFmt, pType, img.data(lvl));
-    }
-
-    glTexParameteri(target, GL_TEXTURE_WRAP_S, OGLTexWrapping[sampler.sWrap()]);
-    glTexParameteri(target, GL_TEXTURE_WRAP_T, OGLTexWrapping[sampler.tWrap()]);
-    glTexParameteri(target, GL_TEXTURE_WRAP_R, OGLTexWrapping[sampler.rWrap()]);
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, OGLTexFilters[sampler.minFilter()]);
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, OGLTexFilters[sampler.magFilter()]);
-
-    // Unbind texture
-    glBindTexture(target, 0);
-
-    return id;
-}*/
-
 void RenderInterface::initialize() {
     _programs.push_back({ 0 });
     _currProgram = 0;
@@ -316,31 +279,7 @@ void RenderInterface::initialize() {
     brdf.loadImage("PBR/brdf.img");
     RRID brdfId = createTexture(brdf, brdfSampler);
     Resource.addTexture("brdf", RHI.getTexture(brdfId));
-    
-    // Load cubemap
-    /*TexSampler cubeSampler;
-    cubeSampler.setFilterMode(FILTER_LINEAR, FILTER_LINEAR);
-    cubeSampler.setWrapMode(WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE);
-    
-    Cubemap cube;
-    cube.loadCubemap("cube.cube");
-    RRID cubeId = createCubemap(cube, cubeSampler);
-    Resource.addTexture("sky", RHI.getTexture(cubeId));
-    
-    Cubemap irradianceCube;
-    irradianceCube.loadCubemap("irradiance.cube");
-    RRID irrCubeId = createCubemap(irradianceCube, cubeSampler);
-    Resource.addTexture("irradiance", RHI.getTexture(irrCubeId));
-
-    TexSampler ggxSampler;
-    ggxSampler.setFilterMode(FILTER_LINEAR_MIP_LINEAR, FILTER_LINEAR);
-    ggxSampler.setWrapMode(WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE, WRAP_CLAMP_EDGE);
-
-    Cubemap ggxCube;
-    ggxCube.loadCubemap("ggx.cube");
-    RRID ggxCubeId = createCubemap(ggxCube, ggxSampler);
-    Resource.addTexture("ggx", RHI.getTexture(ggxCubeId));*/
-    
+        
     // Load standard engine shaders
     ShaderSource fsCommon(FRAGMENT_SHADER, "common.fs");
 
@@ -381,72 +320,6 @@ void RenderInterface::initialize() {
     RHI.setBufferBlock("rendererBlock", RENDERER_BUFFER_IDX);
     RHI.setBufferBlock("cameraBlock",   CAMERA_BUFFER_IDX);
     RHI.useProgram(0);
-
-    
-    ShaderSource vsLighting(VERTEX_SHADER,      "lighting.vs");
-    ShaderSource vsLightingTex(VERTEX_SHADER,   "lightingTex.vs");
-    ShaderSource fsLighting(FRAGMENT_SHADER,    "lighting.fs");
-    ShaderSource fsLightingTex(FRAGMENT_SHADER, "lightingTex.fs");
-    
-    sref<Shader> prog = make_sref<Shader>("lighting");
-    prog->addShader(vsLighting);
-    prog->addShader(fsLighting);
-    prog->addShader(fsCommon);
-    prog->link();
-
-    Resource.addShader("lighting", prog);
-
-    RHI.useProgram(prog->id());
-    prog->registerUniformBlock("cameraBlock");
-    RHI.setBufferBlock("cameraBlock",   CAMERA_BUFFER_IDX);
-    RHI.setBufferBlock("rendererBlock", RENDERER_BUFFER_IDX);
-    RHI.useProgram(0);
-    
-    prog->registerUniform("ModelMatrix");
-    prog->registerUniform("NormalMatrix");
-
-    sref<Shader> progTex = make_sref<Shader>("lightingTex");
-    progTex->addShader(vsLightingTex);
-    progTex->addShader(fsLightingTex);
-    progTex->link();
-
-    Resource.addShader("lightingTex", progTex);
-
-    progTex->registerUniform("ModelMatrix");
-    progTex->registerUniform("NormalMatrix");
-
-    Image tex, tex2;
-    tex.loadImage("floor.png");
-    TexSampler sampler;
-    RRID id  = createTexture(tex, sampler);
-    tex2.loadImage("bump.png");
-    RRID id2 = createTexture(tex2, sampler);
-    RHI.useProgram(progTex->id());
-    progTex->registerUniformBlock("cameraBlock");
-    progTex->registerUniform("diffTex");
-    progTex->registerUniform("bumpMap");
-    RHI.setSampler("diffTex", 1);
-    RHI.setSampler("bumpMap", 2);
-    RHI.setBufferBlock("cameraBlock", CAMERA_BUFFER_IDX);
-    RHI.useProgram(0);
-    
-    // Bind common textures
-
-    glActiveTexture(GL_TEXTURE1);
-    RHI.bindTexture(id);
-
-    glActiveTexture(GL_TEXTURE2);
-    RHI.bindTexture(id2);
-    
-    /*glActiveTexture(GL_TEXTURE5);
-    RHI.bindTexture(cubeId);
-
-    // Set PBR cubemaps
-    glActiveTexture(GL_TEXTURE6);
-    RHI.bindTexture(irrCubeId);
-
-    glActiveTexture(GL_TEXTURE7);
-    RHI.bindTexture(ggxCubeId);*/
 
     // Set BRDF precomputation
     glActiveTexture(GL_TEXTURE8);
@@ -504,12 +377,6 @@ void RenderInterface::drawGeometry(RRID id) {
     glBindVertexArray(vao.id);
 
     glDrawArrays(GL_TRIANGLES, 0, vao.numVertices);
-
-    /*if (vao.numIndices != -1)
-        glDrawElements(GL_TRIANGLES, (GLsizei)vao.numIndices, GL_UNSIGNED_INT, (GLvoid*)0);
-    else
-        glDrawArrays(GL_TRIANGLES, 0, vao.numVertices);
-        */
 
     glBindVertexArray(0);
 }
@@ -713,10 +580,6 @@ RRID RenderInterface::linkProgram(const Shader& shader) {
 
         return false;
     }
-
-    // Register uniform locations
-    
-    // Register uniform block locations
 
     // Detach shaders after successful linking
     for (GLuint sid : shader.shaders())
@@ -947,10 +810,10 @@ RRID RenderInterface::createCubemap(const Cubemap& cube, const TexSampler& sampl
     
     if (cube.numLevels() > 1) {
         glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
-        glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, 4);
+        glTexParameteri(target, GL_TEXTURE_MAX_LEVEL,  4);
         //glGenerateMipmap(target);
     }
-
+    
     for (uint32 side = 0; side < 6; side++) {
         const Image* img = cube.face((CubemapFace)side);
 
@@ -1044,7 +907,7 @@ bool RenderInterface::readCubemap(RRID id, Cubemap& cube) {
 void RenderInterface::generateMipmaps(RRID id) {
     if (id < 0 || id >= _textures.size())
         return; // Error
-
+    
     RHITexture ogltex = _textures[id];
     if (ogltex.id == 0)
         return; // Error

@@ -1,7 +1,7 @@
 #version 400
 
 /* ==============================================================================
-        Stage Inputs
+		Stage Inputs
  ============================================================================== */
 layout(location = 0) in vec3 Position;	
 layout(location = 1) in vec3 Normal;
@@ -9,21 +9,21 @@ layout(location = 2) in vec2 TexCoords;
 layout(location = 3) in vec3 Tangent;
 
 /* ==============================================================================
-        Uniforms
+		Uniforms
  ============================================================================== */
 uniform mat4 ModelMatrix;
 uniform mat3 NormalMatrix;
 
 uniform cameraBlock {
-   	mat4 ViewMatrix;
+	mat4 ViewMatrix;
 	mat4 ProjMatrix;
 	mat4 ViewProjMatrix;
 	vec3 ViewPos;
 };
 
 /* ==============================================================================
-        Stage Outputs
- ============================================================================== */
+		Stage Outputs
+============================================================================== */
 // Passes everything in world coordinates to the fragment shader
 out FragData {
 	vec3 position;

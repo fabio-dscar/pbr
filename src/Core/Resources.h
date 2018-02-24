@@ -47,6 +47,8 @@ namespace pbr {
     private:
         Resources();
 
+        map<std::string, sref<Transform>> _transforms;
+
         map<std::string, sref<Geometry>> _geometry;
         map<std::string, sref<Shape>>    _shapes;
         map<std::string, sref<Shader>>   _shaders;

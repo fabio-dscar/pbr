@@ -168,7 +168,6 @@ namespace pbr {
 
         RRID _currProgram;
 
-        //vec<RHIGeometry>  _geometry;
         vec<RHIVertArray> _vertArrays;
         vec<RHIBuffer>    _buffers;
         vec<RHIProgram>   _programs;

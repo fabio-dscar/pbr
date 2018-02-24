@@ -48,7 +48,7 @@ void mouseClick(int button, int state, int x, int y) {
 }
 
 int main(int argc, char* argv[]) {
-    app = new PBRApp("PBR Demo", 1280, 720);
+    app = new PBRApp("PBR Demo", 1920, 1080);
 
     app->init(argc, argv);
     app->setReshapeCallback(reshape);
@@ -66,23 +66,3 @@ int main(int argc, char* argv[]) {
 
     exit(EXIT_SUCCESS);
 }
-
-/*
-
-#include <iostream>
-#include <Image.h>
-
-int main() {
-
-    Cubemap cube;
-    cube.loadCubemap("toCube.cube");
-    
-    for (int f = 0; f < 6; f++)
-        cube.face((CubemapFace)f)->toneMap(3.5f);
-
-    cube.saveCubemap("coisas.png");
-
-    std::cout << "Hello, world!" << std::endl;
-    std::cin.get();
-    return 0;
-}*/
