@@ -19,7 +19,7 @@ struct Light {
     vec3   emission;   // Non normalized emission (already multiplied by intensity)
     int    type;
     bool   state;      // On/off flag
-}; // 64 Bytes
+};
 
 /* ==============================================================================
         Uniforms
